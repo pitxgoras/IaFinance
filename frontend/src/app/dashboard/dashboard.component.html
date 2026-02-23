@@ -1,0 +1,232 @@
+<div class="dashboard-wrapper">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <img src="assets/images/logo_proyecto.png" alt="IA Finance" class="sidebar-logo">
+      <h2>IA Finance</h2>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <h4>PRINCIPAL</h4>
+        <a routerLink="/dashboard" routerLinkActive="active" class="nav-item">
+          <i class="fas fa-home"></i>
+          <span>Dashboard</span>
+        </a>
+      </div>
+
+      <div class="nav-section">
+        <h4>MÓDULOS INNOVADORES</h4>
+        <a routerLink="/dse" routerLinkActive="active" class="nav-item">
+          <i class="fas fa-robot"></i>
+          <span>DSE - Simulador</span>
+          <span class="nav-badge">Nuevo</span>
+        </a>
+        <a routerLink="/pfse" routerLinkActive="active" class="nav-item">
+          <i class="fas fa-chart-line"></i>
+          <span>PFSE - Estrategias</span>
+          <span class="nav-badge">IA</span>
+        </a>
+        <a routerLink="/ioie" routerLinkActive="active" class="nav-item">
+          <i class="fas fa-briefcase"></i>
+          <span>IOIE - Oportunidades</span>
+          <span class="nav-badge">+Ingresos</span>
+        </a>
+        <a routerLink="/eif" routerLinkActive="active" class="nav-item">
+          <i class="fas fa-plug"></i>
+          <span>EIF - Integraciones</span>
+          <span class="nav-badge">API</span>
+        </a>
+        <a routerLink="/chat" routerLinkActive="active" class="nav-item">
+          <i class="fas fa-comments"></i>
+          <span>Roman - Chat</span>
+          <span class="nav-badge chat">💬</span>
+        </a>
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-profile">
+        <div class="user-avatar">{{ userInitial }}</div>
+        <div class="user-info">
+          <span class="user-name">{{ userName }}</span>
+          <span class="user-email">{{ userEmail }}</span>
+          <span *ngIf="isAdmin" class="admin-badge">Administrador</span>
+        </div>
+      </div>
+      <button class="logout-btn" (click)="logout()">
+        <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+      </button>
+    </div>
+  </aside>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="main-content">
+    <!-- HEADER -->
+    <div class="dashboard-header">
+      <div class="header-left">
+        <h1>Dashboard Financiero</h1>
+        <p class="welcome-text">Bienvenido, <span class="user-name">{{ userName }}</span></p>
+      </div>
+      <div class="header-right">
+        <div class="date-display">
+          <i class="fas fa-calendar-alt"></i> {{ currentDate }}
+        </div>
+        <div *ngIf="isAdmin" class="admin-controls">
+          <button class="admin-btn" (click)="toggleEditMode()">
+            <i class="fas fa-edit"></i> Editar Dashboard
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATS CARDS -->
+    <div class="stats-grid">
+      <div class="stat-card balance">
+        <div class="stat-icon"><i class="fas fa-wallet"></i></div>
+        <div class="stat-info">
+          <span class="stat-label">BALANCE TOTAL</span>
+          <span class="stat-value">{{ formatCurrency(stats.balance) }}</span>
+          <span class="stat-change positive"><i class="fas fa-arrow-up"></i> +{{ stats.balanceChange }}%</span>
+        </div>
+      </div>
+
+      <div class="stat-card income">
+        <div class="stat-icon"><i class="fas fa-arrow-up"></i></div>
+        <div class="stat-info">
+          <span class="stat-label">INGRESOS</span>
+          <span class="stat-value">{{ formatCurrency(stats.income) }}</span>
+          <span class="stat-change positive"><i class="fas fa-arrow-up"></i> +{{ stats.incomeChange }}%</span>
+        </div>
+      </div>
+
+      <div class="stat-card expenses">
+        <div class="stat-icon"><i class="fas fa-arrow-down"></i></div>
+        <div class="stat-info">
+          <span class="stat-label">GASTOS</span>
+          <span class="stat-value">{{ formatCurrency(stats.expenses) }}</span>
+          <span class="stat-change negative"><i class="fas fa-arrow-down"></i> {{ stats.expensesChange }}%</span>
+        </div>
+      </div>
+
+      <div class="stat-card savings">
+        <div class="stat-icon"><i class="fas fa-piggy-bank"></i></div>
+        <div class="stat-info">
+          <span class="stat-label">AHORRO NETO</span>
+          <span class="stat-value">{{ formatCurrency(stats.savings) }}</span>
+          <span class="stat-change positive"><i class="fas fa-arrow-up"></i> +{{ stats.savingsChange }}%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHARTS SECTION -->
+    <div class="charts-section">
+      <!-- GRÁFICO DE BARRAS -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3>Ingresos vs Gastos</h3>
+          <select class="chart-period" [(ngModel)]="selectedPeriod" (change)="changePeriod(selectedPeriod)">
+            <option value="3months">3 meses</option>
+            <option value="6months">6 meses</option>
+            <option value="year">1 año</option>
+          </select>
+        </div>
+        <div class="chart-bars">
+          <div class="bar-group" *ngFor="let label of currentChartData.labels; let i = index">
+            <div class="bar income" 
+                 [style.height.px]="getBarHeight(currentChartData.income[i])"
+                 [attr.data-tooltip]="'Ingresos: ' + formatCurrency(currentChartData.income[i])">
+            </div>
+            <div class="bar expense" 
+                 [style.height.px]="getBarHeight(currentChartData.expense[i])"
+                 [attr.data-tooltip]="'Gastos: ' + formatCurrency(currentChartData.expense[i])">
+            </div>
+            <span class="bar-label">{{ label }}</span>
+          </div>
+        </div>
+        <div class="chart-legend">
+          <span class="legend-item"><span class="legend-color" [style.background]="incomeColor"></span> Ingresos</span>
+          <span class="legend-item"><span class="legend-color" [style.background]="expenseColor"></span> Gastos</span>
+        </div>
+      </div>
+
+      <!-- GRÁFICO CIRCULAR -->
+      <div class="chart-card">
+        <h3>Distribución de Gastos</h3>
+        <div class="pie-chart-container">
+          <div class="pie-chart"></div>
+          <div class="pie-legend">
+            <div class="legend-item" *ngFor="let cat of categories">
+              <span class="color-dot" [style.background]="cat.color"></span>
+              <span class="category-name">{{ cat.name }}</span>
+              <span class="category-percent">{{ cat.percent }}%</span>
+              <span class="category-amount">{{ formatCurrency(cat.amount) }}</span>
+            </div>
+            <div class="total-info"><strong>Total: {{ formatCurrency(stats.expenses) }}</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MÓDULOS INNOVADORES -->
+    <div class="modules-section">
+      <h2>Módulos Innovadores</h2>
+      <div class="modules-grid">
+        <div class="module-card" routerLink="/dse">
+          <div class="module-icon dse"><i class="fas fa-robot"></i></div>
+          <h3>DSE - Simulador</h3>
+          <p>Prueba decisiones financieras sin riesgo</p>
+          <span class="module-badge">NUEVO</span>
+        </div>
+
+        <div class="module-card" routerLink="/pfse">
+          <div class="module-icon pfse"><i class="fas fa-chart-line"></i></div>
+          <h3>PFSE - Estrategias</h3>
+          <p>Recomendaciones con IA</p>
+          <span class="module-badge">IA</span>
+        </div>
+
+        <div class="module-card" routerLink="/ioie">
+          <div class="module-icon ioie"><i class="fas fa-briefcase"></i></div>
+          <h3>IOIE - Oportunidades</h3>
+          <p>Nuevas fuentes de ingreso</p>
+          <span class="module-badge">+INGRESOS</span>
+        </div>
+
+        <div class="module-card" routerLink="/eif">
+          <div class="module-icon eif"><i class="fas fa-plug"></i></div>
+          <h3>EIF - Integraciones</h3>
+          <p>Conecta servicios externos</p>
+          <span class="module-badge">API</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRANSACCIONES RECIENTES -->
+    <div class="transactions-section">
+      <div class="section-header">
+        <h3>Transacciones Recientes</h3>
+        <a href="javascript:void(0)" class="view-all" (click)="navigateToTransactions()">
+          Ver todas <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+      <div class="transactions-list">
+        <div class="transaction-item" *ngFor="let trans of transactions.slice(0,5)">
+          <div class="transaction-icon" [ngClass]="trans.type">
+            <i class="fas" [ngClass]="trans.icon"></i>
+          </div>
+          <div class="transaction-details">
+            <span class="transaction-desc">{{ trans.description }}</span>
+            <span class="transaction-category">{{ trans.category }}</span>
+          </div>
+          <span class="transaction-amount" [ngClass]="trans.type">
+            {{ trans.amount > 0 ? '+' : '' }}{{ formatCurrency(trans.amount) }}
+          </span>
+          <span class="transaction-status" [ngClass]="trans.status">
+            {{ trans.status }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

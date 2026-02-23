@@ -1,0 +1,671 @@
+.pfse-container {
+  padding: 30px;
+  min-height: 100vh;
+  background: #f5f7fa;
+}
+
+/* Header */
+.pfse-header {
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #ddd;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 10px;
+}
+
+.header-left h1 {
+  font-size: 28px;
+  color: #333;
+  margin: 0;
+}
+
+.header-left h1 i {
+  margin-right: 15px;
+  color: #27ae60;
+}
+
+.pfse-header p {
+  color: #666;
+  font-size: 16px;
+  margin-left: 90px;
+}
+
+/* Botón Volver */
+.btn-back {
+  background: transparent;
+  color: #27ae60;
+  border: 2px solid #27ae60;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+
+.btn-back:hover {
+  background: #27ae60;
+  color: white;
+  transform: translateX(-3px);
+  box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 10px;
+}
+
+.tab-btn {
+  padding: 12px 25px;
+  background: transparent;
+  border: none;
+  border-radius: 8px 8px 0 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tab-btn i {
+  font-size: 18px;
+}
+
+.tab-btn:hover {
+  color: #27ae60;
+  background: rgba(39, 174, 96, 0.05);
+}
+
+.tab-btn.active {
+  color: #27ae60;
+  border-bottom: 3px solid #27ae60;
+}
+
+.tab-content {
+  min-height: 400px;
+}
+
+.tab-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.tab-header h2 {
+  color: #333;
+  font-size: 22px;
+  margin: 0;
+}
+
+/* ===== RECOMENDACIONES ===== */
+.prescriptions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.prescription-card {
+  background: white;
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  border-left: 4px solid;
+  transition: transform 0.3s;
+}
+
+.prescription-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.prescription-card[ngClass*="saving"] { border-left-color: #3498db; }
+.prescription-card[ngClass*="debt"] { border-left-color: #e74c3c; }
+.prescription-card[ngClass*="investment"] { border-left-color: #f39c12; }
+.prescription-card[ngClass*="budget"] { border-left-color: #27ae60; }
+
+.prescription-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.prescription-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 20px;
+}
+
+.prescription-icon.saving { background: #3498db; }
+.prescription-icon.debt { background: #e74c3c; }
+.prescription-icon.investment { background: #f39c12; }
+.prescription-icon.budget { background: #27ae60; }
+
+.prescription-info {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.prescription-info h3 {
+  color: #333;
+  margin: 0;
+  font-size: 18px;
+}
+
+.prescription-priority {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.prescription-priority.priority-high {
+  background: #e74c3c;
+  color: white;
+}
+
+.prescription-priority.priority-medium {
+  background: #f39c12;
+  color: white;
+}
+
+.prescription-priority.priority-low {
+  background: #3498db;
+  color: white;
+}
+
+.prescription-description {
+  color: #666;
+  margin-bottom: 15px;
+  line-height: 1.6;
+}
+
+.prescription-action {
+  background: #f8f9fa;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  color: #555;
+}
+
+.prescription-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.prescription-insight {
+  color: #27ae60;
+  font-size: 14px;
+  font-style: italic;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.prescription-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-accept, .btn-reject {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.3s;
+}
+
+.btn-accept {
+  background: #27ae60;
+  color: white;
+}
+
+.btn-accept:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
+}
+
+.btn-reject {
+  background: #e74c3c;
+  color: white;
+}
+
+.btn-reject:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+}
+
+.prescription-status {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.status-pending {
+  background: #f39c12;
+  color: white;
+}
+
+.status-accepted {
+  background: #3498db;
+  color: white;
+}
+
+.status-rejected {
+  background: #95a5a6;
+  color: white;
+}
+
+.status-completed {
+  background: #27ae60;
+  color: white;
+}
+
+/* ===== ESTRATEGIAS ===== */
+.strategies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 20px;
+}
+
+.strategy-card {
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  display: flex;
+  gap: 15px;
+  position: relative;
+  transition: transform 0.3s;
+}
+
+.strategy-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.strategy-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 20px;
+}
+
+.strategy-icon.saving { background: #3498db; }
+.strategy-icon.debt { background: #e74c3c; }
+.strategy-icon.investment { background: #f39c12; }
+.strategy-icon.budget { background: #27ae60; }
+
+.strategy-content {
+  flex: 1;
+}
+
+.strategy-content h3 {
+  color: #333;
+  margin-bottom: 5px;
+  font-size: 16px;
+}
+
+.strategy-content p {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.strategy-meta {
+  display: flex;
+  gap: 10px;
+}
+
+.strategy-priority {
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.priority-1, .priority-2 { background: #e74c3c; color: white; }
+.priority-3, .priority-4 { background: #f39c12; color: white; }
+.priority-5 { background: #27ae60; color: white; }
+
+.strategy-status {
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.strategy-status.active { background: #27ae60; color: white; }
+.strategy-status.completed { background: #3498db; color: white; }
+.strategy-status.paused { background: #f39c12; color: white; }
+
+.btn-delete {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  color: #e74c3c;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.strategy-card:hover .btn-delete {
+  opacity: 1;
+}
+
+/* ===== MÉTRICAS ===== */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 20px;
+}
+
+.metric-card {
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.metric-header {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.metric-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 20px;
+}
+
+.metric-title h3 {
+  color: #333;
+  margin-bottom: 3px;
+  font-size: 16px;
+}
+
+.metric-date {
+  color: #999;
+  font-size: 12px;
+}
+
+.metric-score {
+  display: flex;
+  gap: 20px;
+}
+
+.score-circle {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.score-info {
+  flex: 1;
+}
+
+.metric-insight {
+  color: #333;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.metric-action {
+  color: #666;
+  font-size: 13px;
+}
+
+/* Botones generales */
+.btn-generate, .btn-new {
+  background: linear-gradient(135deg, #27ae60, #229954);
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s;
+}
+
+.btn-generate:hover:not(:disabled), .btn-new:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
+}
+
+.btn-generate:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: 60px;
+  color: #999;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.empty-state i {
+  margin-bottom: 20px;
+  color: #ddd;
+}
+
+.empty-state h3 {
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.empty-state p {
+  margin-bottom: 20px;
+}
+
+/* Modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 15px;
+  padding: 30px;
+  width: 90%;
+  max-width: 500px;
+}
+
+.modal-content h2 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #666;
+  font-weight: 600;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.form-group textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.btn-cancel, .btn-save {
+  padding: 10px 25px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-cancel {
+  background: #f8f9fa;
+  color: #666;
+}
+
+.btn-cancel:hover {
+  background: #e9ecef;
+}
+
+.btn-save {
+  background: #27ae60;
+  color: white;
+}
+
+.btn-save:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .strategies-grid,
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .pfse-container {
+    padding: 15px;
+  }
+  
+  .header-left {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .btn-back {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .pfse-header p {
+    margin-left: 0;
+  }
+  
+  .tabs {
+    flex-direction: column;
+  }
+  
+  .tab-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .prescription-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .prescription-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .prescription-footer {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .prescription-actions {
+    width: 100%;
+  }
+  
+  .btn-accept, .btn-reject {
+    flex: 1;
+    justify-content: center;
+  }
+  
+  .metric-score {
+    flex-direction: column;
+    align-items: center;
+  }
+}

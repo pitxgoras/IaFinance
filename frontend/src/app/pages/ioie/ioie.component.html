@@ -1,0 +1,158 @@
+<div class="ioie-container">
+  <!-- HEADER con botón volver -->
+  <div class="ioie-header">
+    <div class="header-left">
+      <button class="btn-back" (click)="goBack()">
+        <i class="fas fa-arrow-left"></i> Volver al Dashboard
+      </button>
+      <h1><i class="fas fa-briefcase"></i> IOIE - Oportunidades de Ingreso</h1>
+    </div>
+    <p>Descubre nuevas fuentes de ingresos basadas en tus habilidades y perfil</p>
+  </div>
+
+  <div class="ioie-content">
+    <!-- SIDEBAR - HABILIDADES DEL USUARIO -->
+    <div class="skills-sidebar">
+      <div class="skills-header">
+        <h3>Tus Habilidades</h3>
+        <button class="btn-add-skill" (click)="showAddSkill = true">
+          <i class="fas fa-plus"></i>
+        </button>
+      </div>
+
+      <div class="skills-list" *ngIf="userSkills.length > 0; else noSkills">
+        <div class="skill-item" *ngFor="let skill of userSkills">
+          <div class="skill-info">
+            <span class="skill-name">{{ skill.skill_name }}</span>
+            <span class="skill-level" [ngClass]="skill.proficiency_level">
+              {{ getProficiencyText(skill.proficiency_level) }}
+            </span>
+          </div>
+          <div class="skill-meta">
+            <small>{{ skill.years_experience }} años</small>
+            <button class="btn-delete-skill" (click)="deleteSkill(skill.id)" title="Eliminar">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #noSkills>
+        <div class="no-skills">
+          <i class="fas fa-lightbulb"></i>
+          <p>Agrega tus habilidades para obtener mejores recomendaciones</p>
+        </div>
+      </ng-template>
+
+      <!-- FILTROS -->
+      <div class="filters-section">
+        <h4>Filtrar por categoría</h4>
+        <select [(ngModel)]="selectedCategory" class="category-filter">
+          <option *ngFor="let cat of categories" [value]="cat.value">
+            {{ cat.label }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <!-- MAIN CONTENT - OPORTUNIDADES -->
+    <div class="opportunities-main">
+      <div class="opportunities-header">
+        <h2>Oportunidades Recomendadas para ti</h2>
+        <span class="results-count">{{ getFilteredOpportunities().length }} resultados</span>
+      </div>
+
+      <div class="loading-state" *ngIf="loadingOpportunities">
+        <i class="fas fa-spinner fa-spin fa-3x"></i>
+        <p>Cargando oportunidades...</p>
+      </div>
+
+      <div class="opportunities-grid" *ngIf="!loadingOpportunities && getFilteredOpportunities().length > 0; else noOpportunities">
+        <div class="opportunity-card" *ngFor="let opp of getFilteredOpportunities()">
+          <div class="card-header">
+            <div class="category-badge" [style.background]="getCategoryColor(opp.category)">
+              <i class="fas" [ngClass]="getCategoryIcon(opp.category)"></i>
+              <span>{{ opp.category }}</span>
+            </div>
+            <div class="match-score" [style.background]="opp.matchScore > 70 ? '#27ae60' : '#f39c12'">
+              {{ opp.matchScore }}% match
+            </div>
+          </div>
+
+          <h3>{{ opp.title }}</h3>
+          <p class="description">{{ opp.description }}</p>
+
+          <div class="income-range">
+            <i class="fas fa-money-bill-wave"></i>
+            <span>S/ {{ opp.estimated_income_min }} - S/ {{ opp.estimated_income_max }} /mes</span>
+          </div>
+
+          <div class="opportunity-details">
+            <div class="detail-item">
+              <i class="fas fa-clock"></i>
+              <span>{{ opp.time_commitment_hours }} h/semana</span>
+            </div>
+            <div class="detail-item">
+              <i class="fas fa-signal"></i>
+              <span>{{ getDifficultyText(opp.difficulty) }}</span>
+            </div>
+            <div class="detail-item">
+              <i class="fas fa-chart-line"></i>
+              <span>Éxito: {{ opp.success_rate }}%</span>
+            </div>
+          </div>
+
+          <div class="match-reasons" *ngIf="opp.matchReasons?.length">
+            <i class="fas fa-check-circle"></i>
+            <div class="reasons">
+              <small *ngFor="let reason of opp.matchReasons">{{ reason }}</small>
+            </div>
+          </div>
+
+          <div class="card-footer">
+            <button class="btn-apply" (click)="applyToOpportunity(opp.id)" 
+                    [disabled]="opp.status !== 'recommended'">
+              {{ opp.status === 'recommended' ? 'Aplicar' : 'Ya aplicado' }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #noOpportunities>
+        <div class="empty-state">
+          <i class="fas fa-search fa-3x"></i>
+          <h3>No hay oportunidades</h3>
+          <p>Agrega más habilidades para obtener mejores recomendaciones</p>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+
+  <!-- MODAL AGREGAR HABILIDAD -->
+  <div class="modal" *ngIf="showAddSkill">
+    <div class="modal-content">
+      <h2>Agregar Nueva Habilidad</h2>
+      <div class="form-group">
+        <label>Habilidad</label>
+        <input type="text" [(ngModel)]="newSkill.skillName" placeholder="Ej: JavaScript, Diseño, Marketing">
+      </div>
+      <div class="form-group">
+        <label>Nivel de experiencia</label>
+        <select [(ngModel)]="newSkill.proficiencyLevel">
+          <option value="beginner">Principiante</option>
+          <option value="intermediate">Intermedio</option>
+          <option value="advanced">Avanzado</option>
+          <option value="expert">Experto</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Años de experiencia</label>
+        <input type="number" [(ngModel)]="newSkill.yearsExperience" min="0" max="50">
+      </div>
+      <div class="modal-actions">
+        <button class="btn-cancel" (click)="showAddSkill = false">Cancelar</button>
+        <button class="btn-save" (click)="addSkill()">Agregar</button>
+      </div>
+    </div>
+  </div>
+</div>

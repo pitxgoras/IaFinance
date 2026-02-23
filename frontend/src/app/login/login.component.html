@@ -1,0 +1,257 @@
+<!-- src/app/login/login.component.html -->
+<div class="split-layout">
+  <!-- Lado Izquierdo: Presentación -->
+  <div class="left-side">
+    <div class="presentation-content">
+      <!-- Logo grande -->
+      <div class="logo-large">
+        <img src="assets/images/logo_proyecto.png" alt="IA Finance" class="main-logo">
+      </div>
+      
+      <!-- Título y subtítulo -->
+      <div class="brand-text">
+        <h1 class="brand-title">IA Finance</h1>
+        <p class="brand-subtitle">Gestión Inteligente de Finanzas</p>
+      </div>
+
+      <!-- Características -->
+      <div class="features-list">
+        <div class="feature-item">
+          <i class="fas fa-brain"></i>
+          <div class="feature-text">
+            <h4>IA Predictiva</h4>
+            <p>Análisis inteligente de tus finanzas</p>
+          </div>
+        </div>
+        
+        <div class="feature-item">
+          <i class="fas fa-chart-line"></i>
+          <div class="feature-text">
+            <h4>Dashboard Avanzado</h4>
+            <p>Métricas en tiempo real</p>
+          </div>
+        </div>
+        
+        <div class="feature-item">
+          <i class="fas fa-shield-alt"></i>
+          <div class="feature-text">
+            <h4>Seguridad Total</h4>
+            <p>Tus datos siempre protegidos</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Credenciales de prueba -->
+      <div class="demo-credentials">
+        <h4><i class="fas fa-key"></i> Credenciales de Prueba</h4>
+        <div class="credentials-grid">
+          <div class="credential-box admin">
+            <h5>Administrador</h5>
+            <p><strong>Email:</strong> admin&#64;iafinance.com</p>
+            <p><strong>Contraseña:</strong> Admin123!</p>
+          </div>
+          <div class="credential-box user">
+            <h5>Usuario Demo</h5>
+            <p><strong>Email:</strong> usuario&#64;test.com</p>
+            <p><strong>Contraseña:</strong> Test123!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lado Derecho: Formularios -->
+  <div class="right-side">
+    <div class="auth-container">
+      <!-- Toggle Login/Register -->
+      <div class="mode-toggle">
+        <button 
+          [class.active]="isLoginMode" 
+          (click)="isLoginMode = true; resetForms()">
+          <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+        </button>
+        <button 
+          [class.active]="!isLoginMode" 
+          (click)="isLoginMode = false; resetForms()">
+          <i class="fas fa-user-plus"></i> Registrarse
+        </button>
+      </div>
+
+      <!-- Login Form -->
+      <form *ngIf="isLoginMode" (ngSubmit)="onLogin()" class="auth-form">
+        <h2 class="form-title">Bienvenido de nuevo</h2>
+        <p class="form-subtitle">Ingresa tus credenciales para continuar</p>
+
+        <div class="form-group">
+          <label for="email">Correo electrónico</label>
+          <input 
+            type="email" 
+            id="email"
+            [(ngModel)]="loginForm.email"
+            name="email"
+            placeholder="ejemplo@correo.com"
+            class="form-input"
+            required>
+          <div class="error-message" *ngIf="loginForm.email && !loginForm.email.includes('@')">
+            Ingresa un correo válido
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Contraseña</label>
+          <input 
+            type="password" 
+            id="password"
+            [(ngModel)]="loginForm.password"
+            name="password"
+            placeholder="••••••••"
+            class="form-input"
+            required
+            minlength="6">
+          <div class="error-message" *ngIf="loginForm.password && loginForm.password.length < 6">
+            Mínimo 6 caracteres
+          </div>
+        </div>
+
+        <div class="form-options">
+          <label class="checkbox">
+            <input type="checkbox" [(ngModel)]="loginForm.rememberMe" name="rememberMe">
+            <span>Recordar sesión</span>
+          </label>
+          <a href="#" class="forgot-link">¿Olvidaste tu contraseña?</a>
+        </div>
+
+        <button type="submit" class="btn btn-primary" [disabled]="!validateLogin() || loading">
+          <span *ngIf="!loading">Iniciar Sesión</span>
+          <span *ngIf="loading">
+            <i class="fas fa-spinner fa-spin"></i> Procesando...
+          </span>
+        </button>
+
+        <!-- Botón Admin rápido -->
+        <button type="button" class="btn btn-admin" (click)="loginAsAdmin()" [disabled]="loading">
+          <i class="fas fa-user-shield"></i> Acceso Rápido como Admin
+        </button>
+
+        <div class="divider">
+          <span>O</span>
+        </div>
+
+        <!-- Botón Datos Test -->
+        <button type="button" class="btn btn-test" (click)="fillTestData()">
+          <i class="fas fa-magic"></i> Autocompletar datos de prueba
+        </button>
+      </form>
+
+      <!-- Register Form -->
+      <form *ngIf="!isLoginMode" (ngSubmit)="onRegister()" class="auth-form">
+        <h2 class="form-title">Crear nueva cuenta</h2>
+        <p class="form-subtitle">Únete a nuestra plataforma financiera inteligente</p>
+
+        <div class="form-group">
+          <label for="nombre">Nombre completo</label>
+          <input 
+            type="text" 
+            id="nombre"
+            [(ngModel)]="registerForm.nombre"
+            name="nombre"
+            placeholder="Tu nombre completo"
+            class="form-input"
+            required>
+          <div class="error-message" *ngIf="!registerForm.nombre && registerForm.nombre !== ''">
+            El nombre es requerido
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="regEmail">Correo electrónico</label>
+          <input 
+            type="email" 
+            id="regEmail"
+            [(ngModel)]="registerForm.email"
+            name="email"
+            placeholder="tucorreo@ejemplo.com"
+            class="form-input"
+            required>
+          <div class="error-message" *ngIf="registerForm.email && !registerForm.email.includes('@')">
+            Ingresa un correo válido
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group half">
+            <label for="regPassword">Contraseña</label>
+            <input 
+              type="password" 
+              id="regPassword"
+              [(ngModel)]="registerForm.password"
+              name="password"
+              placeholder="••••••••"
+              class="form-input"
+              required
+              minlength="6">
+            <div class="error-message" *ngIf="registerForm.password && registerForm.password.length < 6">
+              Mínimo 6 caracteres
+            </div>
+            <!-- Indicador de fortaleza de contraseña -->
+            <div class="password-strength-indicator" *ngIf="registerForm.password">
+              <div class="strength-bar" [class]="getStrengthClass()"></div>
+              <span class="strength-text">{{ getStrengthText() }}</span>
+            </div>
+          </div>
+
+          <div class="form-group half">
+            <label for="confirmPassword">Confirmar</label>
+            <input 
+              type="password" 
+              id="confirmPassword"
+              [(ngModel)]="registerForm.confirmPassword"
+              name="confirmPassword"
+              placeholder="••••••••"
+              class="form-input"
+              required>
+            <div class="error-message" *ngIf="registerForm.confirmPassword && !passwordsMatch()">
+              Las contraseñas no coinciden
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" [disabled]="!validateRegister() || loading">
+          <span *ngIf="!loading">Crear Cuenta Gratis</span>
+          <span *ngIf="loading">
+            <i class="fas fa-spinner fa-spin"></i> Registrando...
+          </span>
+        </button>
+
+        <!-- Botón Datos Test -->
+        <button type="button" class="btn btn-test" (click)="fillTestData()">
+          <i class="fas fa-magic"></i> Autocompletar datos de prueba
+        </button>
+
+        <!-- Términos y condiciones -->
+        <div class="terms">
+          <p>Al registrarte, aceptas nuestros 
+            <a href="#">Términos de Servicio</a> y 
+            <a href="#">Política de Privacidad</a>.
+          </p>
+        </div>
+      </form>
+
+      <!-- Cambiar modo -->
+      <div class="switch-mode">
+        <p *ngIf="isLoginMode">
+          ¿No tienes cuenta? 
+          <a href="#" (click)="toggleLoginMode(); $event.preventDefault()">
+            <strong>Regístrate aquí</strong>
+          </a>
+        </p>
+        <p *ngIf="!isLoginMode">
+          ¿Ya tienes cuenta? 
+          <a href="#" (click)="toggleLoginMode(); $event.preventDefault()">
+            <strong>Inicia sesión aquí</strong>
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

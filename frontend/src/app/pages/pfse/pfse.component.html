@@ -1,0 +1,194 @@
+<div class="pfse-container">
+  <!-- HEADER con botón volver -->
+  <div class="pfse-header">
+    <div class="header-left">
+      <button class="btn-back" (click)="goBack()">
+        <i class="fas fa-arrow-left"></i> Volver al Dashboard
+      </button>
+      <h1><i class="fas fa-chart-line"></i> PFSE - Estrategias Financieras</h1>
+    </div>
+    <p>Recomendaciones personalizadas basadas en IA y tu comportamiento financiero</p>
+  </div>
+
+  <!-- PESTAÑAS DE NAVEGACIÓN -->
+  <div class="tabs">
+    <button class="tab-btn" [class.active]="activeTab === 'prescriptions'" (click)="activeTab = 'prescriptions'">
+      <i class="fas fa-lightbulb"></i> Recomendaciones
+    </button>
+    <button class="tab-btn" [class.active]="activeTab === 'strategies'" (click)="activeTab = 'strategies'">
+      <i class="fas fa-tasks"></i> Mis Estrategias
+    </button>
+    <button class="tab-btn" [class.active]="activeTab === 'metrics'" (click)="activeTab = 'metrics'">
+      <i class="fas fa-chart-simple"></i> Métricas de Comportamiento
+    </button>
+  </div>
+
+  <!-- CONTENIDO DE PESTAÑAS -->
+  <div class="tab-content">
+    
+    <!-- PESTAÑA: RECOMENDACIONES -->
+    <div *ngIf="activeTab === 'prescriptions'" class="prescriptions-tab">
+      <div class="tab-header">
+        <h2>Recomendaciones para ti</h2>
+        <button class="btn-generate" (click)="generatePrescriptions()" [disabled]="loadingPrescriptions">
+          <i class="fas" [ngClass]="loadingPrescriptions ? 'fa-spinner fa-spin' : 'fa-magic'"></i>
+          {{ loadingPrescriptions ? 'Generando...' : 'Generar nuevas recomendaciones' }}
+        </button>
+      </div>
+
+      <div class="prescriptions-list" *ngIf="prescriptions.length > 0; else noPrescriptions">
+        <div class="prescription-card" *ngFor="let pres of prescriptions">
+          <div class="prescription-header">
+            <div class="prescription-icon" [ngClass]="pres.action_type">
+              <i class="fas" [ngClass]="getTypeIcon(pres.action_type)"></i>
+            </div>
+            <div class="prescription-info">
+              <h3>{{ pres.title }}</h3>
+              <span class="prescription-priority" [ngClass]="getPriorityClass(pres.priority)">
+                {{ pres.priority === 'high' ? 'Alta' : pres.priority === 'medium' ? 'Media' : 'Baja' }}
+              </span>
+            </div>
+          </div>
+          <p class="prescription-description">{{ pres.description }}</p>
+          <p class="prescription-action"><strong>Acción:</strong> {{ pres.action }}</p>
+          <div class="prescription-footer">
+            <span class="prescription-insight" *ngIf="pres.behavioral_insight">
+              <i class="fas fa-brain"></i> {{ pres.behavioral_insight }}
+            </span>
+            <div class="prescription-actions">
+              <button *ngIf="pres.status === 'pending'" class="btn-accept" (click)="updatePrescriptionStatus(pres.id, 'accepted')">
+                <i class="fas fa-check"></i> Aceptar
+              </button>
+              <button *ngIf="pres.status === 'pending'" class="btn-reject" (click)="updatePrescriptionStatus(pres.id, 'rejected')">
+                <i class="fas fa-times"></i> Rechazar
+              </button>
+              <span *ngIf="pres.status !== 'pending'" class="prescription-status" [ngClass]="getStatusClass(pres.status)">
+                {{ pres.status === 'accepted' ? '✓ Aceptada' : pres.status === 'completed' ? '✓ Completada' : '✗ Rechazada' }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #noPrescriptions>
+        <div class="empty-state">
+          <i class="fas fa-lightbulb fa-3x"></i>
+          <h3>No hay recomendaciones</h3>
+          <p>Genera nuevas recomendaciones basadas en tus datos financieros</p>
+          <button class="btn-generate" (click)="generatePrescriptions()">
+            <i class="fas fa-magic"></i> Generar recomendaciones
+          </button>
+        </div>
+      </ng-template>
+    </div>
+
+    <!-- PESTAÑA: MIS ESTRATEGIAS -->
+    <div *ngIf="activeTab === 'strategies'" class="strategies-tab">
+      <div class="tab-header">
+        <h2>Mis Estrategias</h2>
+        <button class="btn-new" (click)="showNewStrategy = true">
+          <i class="fas fa-plus"></i> Nueva Estrategia
+        </button>
+      </div>
+
+      <div class="strategies-grid" *ngIf="strategies.length > 0; else noStrategies">
+        <div class="strategy-card" *ngFor="let strat of strategies">
+          <div class="strategy-icon" [ngClass]="strat.type">
+            <i class="fas" [ngClass]="getTypeIcon(strat.type)"></i>
+          </div>
+          <div class="strategy-content">
+            <h3>{{ strat.name }}</h3>
+            <p>{{ strat.description || 'Sin descripción' }}</p>
+            <div class="strategy-meta">
+              <span class="strategy-priority" [ngClass]="'priority-' + strat.priority">
+                Prioridad {{ strat.priority }}
+              </span>
+              <span class="strategy-status" [ngClass]="strat.status">
+                {{ strat.status }}
+              </span>
+            </div>
+          </div>
+          <button class="btn-delete" (click)="deleteStrategy(strat.id)" title="Eliminar">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+      </div>
+
+      <ng-template #noStrategies>
+        <div class="empty-state">
+          <i class="fas fa-tasks fa-3x"></i>
+          <h3>No hay estrategias</h3>
+          <p>Crea tu primera estrategia financiera</p>
+        </div>
+      </ng-template>
+    </div>
+
+    <!-- PESTAÑA: MÉTRICAS DE COMPORTAMIENTO -->
+    <div *ngIf="activeTab === 'metrics'" class="metrics-tab">
+      <h2>Métricas de Comportamiento</h2>
+      
+      <div class="metrics-grid" *ngIf="metrics.length > 0; else noMetrics">
+        <div class="metric-card" *ngFor="let metric of metrics">
+          <div class="metric-header">
+            <div class="metric-icon" [style.background]="getScoreColor(metric.score)">
+              <i class="fas" [ngClass]="getMetricIcon(metric.metric_type)"></i>
+            </div>
+            <div class="metric-title">
+              <h3>{{ getMetricName(metric.metric_type) }}</h3>
+              <span class="metric-date">{{ metric.recorded_at | date:'dd/MM/yyyy' }}</span>
+            </div>
+          </div>
+          <div class="metric-score">
+            <div class="score-circle" [style.background]="getScoreColor(metric.score)">
+              <span>{{ metric.score }}</span>
+            </div>
+            <div class="score-info">
+              <p class="metric-insight">{{ metric.insight }}</p>
+              <p class="metric-action"><strong>Sugerencia:</strong> {{ metric.recommended_action }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #noMetrics>
+        <div class="empty-state">
+          <i class="fas fa-chart-simple fa-3x"></i>
+          <h3>No hay métricas disponibles</h3>
+          <p>Las métricas se generarán automáticamente con tu actividad</p>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+
+  <!-- MODAL NUEVA ESTRATEGIA -->
+  <div class="modal" *ngIf="showNewStrategy">
+    <div class="modal-content">
+      <h2>Crear Nueva Estrategia</h2>
+      <div class="form-group">
+        <label>Nombre de la estrategia</label>
+        <input type="text" [(ngModel)]="newStrategy.name" placeholder="Ej: Ahorro mensual">
+      </div>
+      <div class="form-group">
+        <label>Tipo</label>
+        <select [(ngModel)]="newStrategy.type">
+          <option value="saving">Ahorro</option>
+          <option value="debt">Pago de Deudas</option>
+          <option value="investment">Inversión</option>
+          <option value="budget">Presupuesto</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Prioridad (1-5)</label>
+        <input type="number" [(ngModel)]="newStrategy.priority" min="1" max="5">
+      </div>
+      <div class="form-group">
+        <label>Descripción (opcional)</label>
+        <textarea [(ngModel)]="newStrategy.description" placeholder="Describe tu estrategia"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-cancel" (click)="showNewStrategy = false">Cancelar</button>
+        <button class="btn-save" (click)="createStrategy()">Crear Estrategia</button>
+      </div>
+    </div>
+  </div>
+</div>

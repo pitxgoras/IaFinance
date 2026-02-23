@@ -1,0 +1,116 @@
+<div class="chat-container">
+  <!-- SIDEBAR DEL CHAT -->
+  <div class="chat-sidebar">
+    <div class="sidebar-header">
+      <img src="assets/images/logo_proyecto.png" alt="IA Finance" class="sidebar-logo">
+      <h3>Roman</h3>
+    </div>
+    
+    <div class="bot-info">
+      <div class="bot-avatar">
+        <i class="fas fa-robot"></i>
+      </div>
+      <h4>Asistente Financiero</h4>
+      <p>Especialista en finanzas personales</p>
+      <div class="bot-status">
+        <span class="status-dot"></span>
+        <span>Online - Responde en segundos</span>
+      </div>
+    </div>
+
+    <div class="quick-questions-section">
+      <h5>⚡ PREGUNTAS RÁPIDAS</h5>
+      <div class="quick-questions">
+        <button *ngFor="let q of quickQuestions" 
+                class="quick-question-btn"
+                (click)="quickQuestion(q.question)">
+          {{ q.text }}
+        </button>
+      </div>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="user-avatar">
+          {{ userInitial }}
+        </div>
+        <div class="user-details">
+          <span class="user-name">{{ userName }}</span>
+          <span class="user-role">Usuario</span>
+        </div>
+      </div>
+      <button class="back-btn" routerLink="/dashboard">
+        <i class="fas fa-arrow-left"></i> Volver al Dashboard
+      </button>
+    </div>
+  </div>
+
+  <!-- ÁREA PRINCIPAL DEL CHAT -->
+  <div class="chat-main">
+    <div class="chat-header">
+      <div class="header-info">
+        <div class="header-avatar">
+          <i class="fas fa-robot"></i>
+        </div>
+        <div>
+          <h2>Roman - Asistente Financiero</h2>
+          <p class="header-subtitle">Especialista en finanzas personales e inversiones</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="btn-clear" (click)="clearChat()" title="Limpiar chat">
+          <i class="fas fa-trash-alt"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="messages-container" #messageContainer>
+      <div *ngFor="let msg of messages" 
+           class="message" 
+           [class.user-message]="msg.sender === 'user'">
+        
+        <div class="message-avatar" *ngIf="msg.sender === 'bot'">
+          <i class="fas fa-robot"></i>
+        </div>
+        
+        <div class="message-avatar user" *ngIf="msg.sender === 'user'">
+          {{ userInitial }}
+        </div>
+        
+        <div class="message-content">
+          <div class="message-text">{{ msg.text }}</div>
+          <div class="message-time">{{ getTimeString(msg.timestamp) }}</div>
+        </div>
+      </div>
+      
+      <div class="typing-indicator" *ngIf="isTyping">
+        <span></span><span></span><span></span>
+        <span class="typing-text">Roman está escribiendo...</span>
+      </div>
+    </div>
+
+    <div class="input-area">
+      <div class="suggested-topics">
+        <span class="topic-label">📚 Temas sugeridos:</span>
+        <div class="topics">
+          <span class="topic" *ngFor="let topic of suggestedTopics" 
+                (click)="quickQuestion(topic.question)">
+            {{ topic.icon }} {{ topic.name }}
+          </span>
+        </div>
+      </div>
+
+      <div class="input-wrapper">
+        <input 
+          type="text" 
+          [(ngModel)]="userMessage" 
+          (keyup.enter)="sendMessage()"
+          placeholder="Escribe tu pregunta sobre finanzas..."
+          class="chat-input">
+        <button class="send-btn" (click)="sendMessage()" [disabled]="!userMessage.trim()">
+          <i class="fas fa-paper-plane"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

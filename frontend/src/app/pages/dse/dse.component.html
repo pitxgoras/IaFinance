@@ -1,0 +1,219 @@
+<div class="dse-container">
+  <!-- HEADER con botón volver -->
+  <div class="dse-header">
+    <div class="header-left">
+      <button class="btn-back" (click)="goBack()">
+        <i class="fas fa-arrow-left"></i> Volver al Dashboard
+      </button>
+      <h1><i class="fas fa-robot"></i> DSE - Decision Simulation Engine</h1>
+    </div>
+    <button class="btn-new" (click)="showNewSimulation = true">
+      <i class="fas fa-plus"></i> Nueva Simulación
+    </button>
+  </div>
+  <p>Simula decisiones financieras y visualiza su impacto en tiempo real</p>
+
+  <div class="dse-content">
+    <!-- SIDEBAR - LISTA DE SIMULACIONES -->
+    <div class="simulations-sidebar">
+      <h3>Mis Simulaciones</h3>
+      <div class="simulations-list">
+        <div *ngFor="let sim of simulations" 
+             class="sim-item" 
+             [class.active]="selectedSimulation?.id === sim.id"
+             (click)="viewDetails(sim.id)">
+          <div class="sim-info">
+            <strong>{{ sim.name }}</strong>
+            <span class="sim-status" [class]="sim.status">{{ sim.status }}</span>
+          </div>
+          <small>{{ sim.createdAt | date:'short' }}</small>
+          <button class="btn-delete" (click)="deleteSimulation(sim.id); $event.stopPropagation()">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+        <div *ngIf="simulations.length === 0" class="empty-list">
+          <i class="fas fa-robot"></i>
+          <p>No hay simulaciones</p>
+          <small>Crea una nueva simulación para comenzar</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN CONTENT - SIMULACIÓN ACTIVA -->
+    <div class="simulation-main" *ngIf="selectedSimulation; else noSelectionTemplate">
+      <div class="simulation-header">
+        <h2>{{ selectedSimulation.name }}</h2>
+        <p>{{ selectedSimulation.description || 'Sin descripción' }}</p>
+      </div>
+
+      <!-- VARIABLES DE SIMULACIÓN -->
+      <div class="variables-section">
+        <h3>Variables de Simulación</h3>
+        <div class="variables-grid">
+          <div class="variable-card" *ngFor="let variable of variables; let i = index">
+            <div class="variable-icon" [ngClass]="variable.type">
+              <i class="fas" [ngClass]="{
+                'fa-money-bill-wave': variable.type === 'income',
+                'fa-shopping-cart': variable.type === 'expense',
+                'fa-credit-card': variable.type === 'debt',
+                'fa-piggy-bank': variable.type === 'saving',
+                'fa-chart-line': variable.type === 'investment'
+              }"></i>
+            </div>
+            <div class="variable-info">
+              <span class="variable-name">{{ variable.name }}</span>
+              <div class="variable-values">
+                <div class="current-value">
+                  <small>Actual</small>
+                  <strong>{{ formatCurrency(variable.currentValue) }}</strong>
+                </div>
+                <div class="simulated-value">
+                  <small>Simulado</small>
+                  <input type="number" 
+                         [value]="variable.simulatedValue"
+                         (input)="updateVariable(i, $event.target.value)"
+                         class="simulated-input">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="variables-actions">
+          <button class="btn-reset" (click)="resetVariables()">
+            <i class="fas fa-undo"></i> Restablecer
+          </button>
+          <button class="btn-run" (click)="runSimulation(selectedSimulation.id)">
+            <i class="fas fa-play"></i> Ejecutar Simulación
+          </button>
+        </div>
+      </div>
+
+      <!-- RESULTADOS DE SIMULACIÓN -->
+      <div class="results-section" *ngIf="results">
+        <h3>Resultados de la Simulación</h3>
+        
+        <!-- Métricas principales -->
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <span class="metric-label">Balance Proyectado</span>
+            <span class="metric-value">{{ formatCurrency(results.projectedBalance) }}</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Ahorro Proyectado</span>
+            <span class="metric-value">{{ formatCurrency(results.projectedSavings) }}</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Deuda Proyectada</span>
+            <span class="metric-value">{{ formatCurrency(results.projectedDebt) }}</span>
+          </div>
+        </div>
+
+        <!-- Indicadores de riesgo -->
+        <div class="risk-indicators">
+          <div class="risk-item">
+            <span class="risk-label">Nivel de Riesgo</span>
+            <span class="risk-badge" [style.background]="getRiskColor(results.riskLevel)">
+              {{ getRiskText(results.riskLevel) }}
+            </span>
+          </div>
+          <div class="risk-item">
+            <span class="risk-label">Probabilidad de Éxito</span>
+            <div class="progress-bar">
+              <div class="progress-fill" [style.width.%]="results.successProbability" 
+                   [style.background]="results.successProbability > 70 ? '#27ae60' : '#f39c12'">
+                {{ results.successProbability }}%
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Impacto mensual/anual -->
+        <div class="impact-grid">
+          <div class="impact-card">
+            <i class="fas fa-calendar-alt"></i>
+            <div>
+              <span class="impact-label">Impacto Mensual</span>
+              <span class="impact-value" [class.positive]="results.monthlyImpact > 0"
+                    [class.negative]="results.monthlyImpact < 0">
+                {{ results.monthlyImpact > 0 ? '+' : '' }}{{ formatCurrency(results.monthlyImpact) }}
+              </span>
+            </div>
+          </div>
+          <div class="impact-card">
+            <i class="fas fa-calendar-plus"></i>
+            <div>
+              <span class="impact-label">Impacto Anual</span>
+              <span class="impact-value" [class.positive]="results.yearlyImpact > 0"
+                    [class.negative]="results.yearlyImpact < 0">
+                {{ results.yearlyImpact > 0 ? '+' : '' }}{{ formatCurrency(results.yearlyImpact) }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recomendaciones -->
+        <div class="recommendations" *ngIf="results.recommendations?.length">
+          <h4>Recomendaciones</h4>
+          <div class="recommendations-list">
+            <div class="recommendation-card" *ngFor="let rec of results.recommendations">
+              <div class="rec-icon" [ngClass]="rec.type">
+                <i class="fas" [ngClass]="{
+                  'fa-check-circle': rec.type === 'success',
+                  'fa-exclamation-triangle': rec.type === 'warning',
+                  'fa-info-circle': rec.type === 'info',
+                  'fa-bolt': rec.type === 'critical'
+                }"></i>
+              </div>
+              <div class="rec-content">
+                <strong>{{ rec.title }}</strong>
+                <p>{{ rec.description }}</p>
+                <small>{{ rec.action }}</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TEMPLATE PARA CUANDO NO HAY SIMULACIÓN SELECCIONADA -->
+    <ng-template #noSelectionTemplate>
+      <div class="no-selection">
+        <i class="fas fa-robot fa-3x"></i>
+        <h3>Selecciona una simulación</h3>
+        <p>Elige una simulación de la lista o crea una nueva</p>
+        <button class="btn-new" (click)="showNewSimulation = true">
+          <i class="fas fa-plus"></i> Nueva Simulación
+        </button>
+      </div>
+    </ng-template>
+  </div>
+
+  <!-- MODAL NUEVA SIMULACIÓN -->
+  <div class="modal" *ngIf="showNewSimulation">
+    <div class="modal-content">
+      <h2>Crear Nueva Simulación</h2>
+      <div class="form-group">
+        <label>Nombre de la simulación</label>
+        <input type="text" [(ngModel)]="newSimulation.name" placeholder="Ej: Aumento de ingresos">
+      </div>
+      <div class="form-group">
+        <label>Descripción (opcional)</label>
+        <textarea [(ngModel)]="newSimulation.description" placeholder="Describe el objetivo de la simulación"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Tipo de simulación</label>
+        <select [(ngModel)]="newSimulation.type">
+          <option value="income_change">Cambio de Ingresos</option>
+          <option value="expense_change">Cambio de Gastos</option>
+          <option value="debt_payment">Pago de Deudas</option>
+          <option value="investment">Inversión</option>
+          <option value="custom">Personalizada</option>
+        </select>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-cancel" (click)="showNewSimulation = false">Cancelar</button>
+        <button class="btn-save" (click)="createSimulation()">Crear Simulación</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,246 @@
+<div class="eif-container">
+  <!-- HEADER con botón volver -->
+  <div class="eif-header">
+    <div class="header-left">
+      <button class="btn-back" (click)="goBack()">
+        <i class="fas fa-arrow-left"></i> Volver al Dashboard
+      </button>
+      <h1><i class="fas fa-plug"></i> EIF - Ecosystem Integration</h1>
+    </div>
+    <p>Conecta tus cuentas bancarias, plataformas freelance y servicios externos</p>
+  </div>
+
+  <div class="eif-content">
+    <!-- SECCIÓN: SERVICIOS CONECTADOS -->
+    <div class="services-section">
+      <div class="section-header">
+        <h2>Servicios Conectados</h2>
+        <button class="btn-connect" (click)="showConnectForm = true">
+          <i class="fas fa-plus"></i> Conectar nuevo
+        </button>
+      </div>
+
+      <div class="loading-state" *ngIf="loadingServices">
+        <i class="fas fa-spinner fa-spin"></i>
+        <p>Cargando servicios...</p>
+      </div>
+
+      <div class="services-grid" *ngIf="!loadingServices && connectedServices.length > 0; else noServices">
+        <div class="service-card" *ngFor="let service of connectedServices">
+          <div class="service-header">
+            <div class="service-icon" [style.background]="getServiceTypeInfo(service.service_type).color">
+              <i class="fas" [ngClass]="getServiceTypeInfo(service.service_type).icon"></i>
+            </div>
+            <div class="service-info">
+              <h3>{{ service.service_name }}</h3>
+              <span class="service-type">{{ getServiceTypeInfo(service.service_type).label }}</span>
+            </div>
+            <div class="service-status" [ngClass]="getStatusClass(service.connection_status)">
+              {{ service.connection_status }}
+            </div>
+          </div>
+
+          <div class="service-details">
+            <div class="detail-item">
+              <i class="fas fa-clock"></i>
+              <span>Última sincronización: {{ formatDate(service.last_sync_at) }}</span>
+            </div>
+          </div>
+
+          <div class="service-actions">
+            <button class="btn-sync" (click)="syncService(service)" [disabled]="service.connection_status !== 'active'">
+              <i class="fas fa-sync-alt"></i> Sincronizar
+            </button>
+            <button class="btn-disconnect" (click)="disconnectService(service.id)" title="Desconectar">
+              <i class="fas fa-unlink"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #noServices>
+        <div class="empty-state">
+          <i class="fas fa-plug fa-3x"></i>
+          <h3>No hay servicios conectados</h3>
+          <p>Conecta tu primer servicio para comenzar a integrar tus datos</p>
+        </div>
+      </ng-template>
+    </div>
+
+    <!-- SECCIÓN: DATOS SINCRONIZADOS (MODAL) -->
+    <div class="modal" *ngIf="showSyncData && syncData">
+      <div class="modal-content large">
+        <div class="modal-header">
+          <h2>Datos sincronizados - {{ selectedService?.service_name }}</h2>
+          <button class="btn-close" (click)="showSyncData = false">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+
+        <div class="sync-data">
+          <div class="sync-time">
+            <i class="fas fa-clock"></i>
+            Sincronizado: {{ formatDate(syncData.syncedAt) }}
+          </div>
+
+          <div class="accounts-section" *ngIf="syncData.accounts?.length">
+            <h3>Cuentas</h3>
+            <div class="accounts-list">
+              <div class="account-item" *ngFor="let acc of syncData.accounts">
+                <div class="account-icon">
+                  <i class="fas fa-university"></i>
+                </div>
+                <div class="account-info">
+                  <span class="account-name">{{ acc.name }}</span>
+                  <span class="account-balance">S/ {{ acc.balance }}</span>
+                </div>
+                <span class="account-digits">{{ acc.lastDigits }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="transactions-section" *ngIf="syncData.transactions?.length">
+            <h3>Transacciones recientes</h3>
+            <div class="transactions-list">
+              <div class="transaction-item" *ngFor="let trans of syncData.transactions">
+                <div class="transaction-icon" [ngClass]="trans.type">
+                  <i class="fas" [ngClass]="trans.type === 'income' ? 'fa-arrow-down' : 'fa-arrow-up'"></i>
+                </div>
+                <div class="transaction-info">
+                  <span class="transaction-desc">{{ trans.description }}</span>
+                  <span class="transaction-date">{{ trans.date | date:'dd/MM/yyyy' }}</span>
+                </div>
+                <span class="transaction-amount" [ngClass]="trans.type">
+                  {{ trans.amount > 0 ? '+' : '' }}{{ trans.amount | currency:'PEN' }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCIÓN: APIS DISPONIBLES -->
+    <div class="apis-section">
+      <h2>APIs Disponibles para Integrar</h2>
+      <div class="apis-grid">
+        <div class="api-card" *ngFor="let api of externalApis">
+          <div class="api-header">
+            <h3>{{ api.api_name }}</h3>
+            <span class="api-type" [ngClass]="api.api_type">{{ api.api_type }}</span>
+          </div>
+          <div class="api-details">
+            <div class="detail-item">
+              <i class="fas fa-link"></i>
+              <span>{{ api.base_url }}</span>
+            </div>
+            <div class="detail-item">
+              <i class="fas fa-lock"></i>
+              <span>Auth: {{ api.auth_type }}</span>
+            </div>
+          </div>
+          <a [href]="api.documentation_url" target="_blank" class="btn-docs">
+            <i class="fas fa-book"></i> Documentación
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCIÓN: WEBHOOKS (OPCIONAL) -->
+    <div class="webhooks-section">
+      <div class="section-header">
+        <h2>Webhooks Activos</h2>
+        <button class="btn-add-webhook" (click)="showWebhookForm = true" *ngIf="connectedServices.length > 0">
+          <i class="fas fa-plus"></i> Nuevo Webhook
+        </button>
+      </div>
+
+      <div class="webhooks-list" *ngIf="webhooks.length > 0; else noWebhooks">
+        <div class="webhook-item" *ngFor="let webhook of webhooks">
+          <div class="webhook-info">
+            <strong>{{ webhook.service_name }}</strong>
+            <span class="webhook-url">{{ webhook.webhook_url }}</span>
+            <small>Evento: {{ webhook.event_type }}</small>
+          </div>
+          <span class="webhook-status" [class.active]="webhook.is_active">
+            {{ webhook.is_active ? 'Activo' : 'Inactivo' }}
+          </span>
+        </div>
+      </div>
+
+      <ng-template #noWebhooks>
+        <div class="empty-state small">
+          <p>No hay webhooks configurados</p>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+
+  <!-- MODAL CONECTAR SERVICIO -->
+  <div class="modal" *ngIf="showConnectForm">
+    <div class="modal-content">
+      <h2>Conectar Nuevo Servicio</h2>
+      
+      <div class="form-group">
+        <label>Nombre del servicio</label>
+        <input type="text" [(ngModel)]="newService.serviceName" placeholder="Ej: Mi Banco, Upwork, etc.">
+      </div>
+
+      <div class="form-group">
+        <label>Tipo de servicio</label>
+        <select [(ngModel)]="newService.serviceType">
+          <option *ngFor="let type of serviceTypes" [value]="type.value">
+            {{ type.label }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group" *ngIf="newService.serviceType === 'bank'">
+        <label>Credenciales (demo)</label>
+        <input type="text" placeholder="Usuario">
+        <input type="password" placeholder="Contraseña" class="mt-2">
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-cancel" (click)="showConnectForm = false">Cancelar</button>
+        <button class="btn-save" (click)="connectService()">Conectar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL REGISTRAR WEBHOOK -->
+  <div class="modal" *ngIf="showWebhookForm">
+    <div class="modal-content">
+      <h2>Registrar Nuevo Webhook</h2>
+      
+      <div class="form-group">
+        <label>Servicio</label>
+        <select [(ngModel)]="newWebhook.serviceId">
+          <option *ngFor="let service of connectedServices" [value]="service.id">
+            {{ service.service_name }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>URL del Webhook</label>
+        <input type="url" [(ngModel)]="newWebhook.webhookUrl" placeholder="https://tuservidor.com/webhook">
+      </div>
+
+      <div class="form-group">
+        <label>Tipo de evento</label>
+        <select [(ngModel)]="newWebhook.eventType">
+          <option value="all">Todos los eventos</option>
+          <option value="transaction.created">Nueva transacción</option>
+          <option value="transaction.updated">Transacción actualizada</option>
+          <option value="account.balance">Cambio de balance</option>
+        </select>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-cancel" (click)="showWebhookForm = false">Cancelar</button>
+        <button class="btn-save" (click)="registerWebhook()">Registrar</button>
+      </div>
+    </div>
+  </div>
+</div>
