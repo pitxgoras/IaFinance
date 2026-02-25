@@ -1,14 +1,14 @@
 FROM node:18-alpine AS build
 WORKDIR /app
 
-# Copiar primero los archivos de dependencias
+# Copiar archivos de dependencias
 COPY frontend/package*.json ./
 
-# Instalar dependencias (usando npm install en lugar de npm ci)
+# Instalar dependencias
 RUN npm install
 
-# Copiar el resto del código del frontend
-COPY frontend/ .
+# Copiar el resto del código (sin sobrescribir node_modules)
+COPY frontend/ ./
 
 # Construir la aplicación
 RUN npx ng build --configuration production
