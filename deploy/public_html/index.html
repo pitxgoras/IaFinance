@@ -109,7 +109,7 @@
             height: 150px;
             margin: 0 auto 20px;
             border-radius: 50%;
-            background: #000000;  /* Fondo negro */
+            background: #000000;
             padding: 15px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.5);
             display: flex;
@@ -122,7 +122,7 @@
             width: 100%;
             height: 100%;
             object-fit: contain;
-            filter: brightness(1.2); /* Hace el logo más brillante sobre negro */
+            filter: brightness(1.2);
         }
 
         h1 {
@@ -702,6 +702,7 @@
         .stat-change.positive { color: var(--success); }
         .stat-change.negative { color: #e74c3c; }
 
+        /* CHARTS SECTION - ACTUALIZADO */
         .charts-section {
             display: grid;
             grid-template-columns: 2fr 1fr;
@@ -766,35 +767,35 @@
 
         .chart-bars {
             display: flex;
-            justify-content: space-around;
+            justify-content: center;
             align-items: flex-end;
             min-height: 220px;
             margin: 20px 0 25px;
             padding: 15px 10px;
             background: var(--gray-light);
             border-radius: 15px;
-            gap: 10px;
+            gap: 5px;
             flex-wrap: wrap;
+            overflow-x: auto;
         }
 
         .bar-group {
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 50px;
+            margin: 0 2px;
         }
 
         .bar {
-            width: 35px;
-            border-radius: 8px 8px 0 0;
+            border-radius: 6px 6px 0 0;
             transition: all 0.3s ease;
             position: relative;
             cursor: pointer;
+            margin: 2px 0;
         }
 
         .bar.income {
             background: linear-gradient(180deg, var(--success), #2ecc71);
-            margin-bottom: 5px;
         }
 
         .bar.expense {
@@ -802,11 +803,29 @@
         }
 
         .bar-label {
-            margin-top: 10px;
-            font-size: 0.7rem;
-            color: var(--text-light);
+            margin-top: 8px;
             font-weight: 700;
             text-transform: uppercase;
+            color: var(--text-light);
+        }
+
+        [data-tooltip] {
+            position: relative;
+        }
+
+        [data-tooltip]:hover:after {
+            content: attr(data-tooltip);
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--text-dark);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            white-space: nowrap;
+            z-index: 1000;
         }
 
         .chart-legend {
@@ -1274,12 +1293,12 @@
                         
                         <div class="input-group">
                             <label>Nombre completo</label>
-                            <input type="text" id="regName" placeholder="Ej: Jhonn Pether">
+                            <input type="text" id="regName" placeholder="Ej: Juan Pérez">
                         </div>
                         
                         <div class="input-group">
                             <label>Correo electrónico</label>
-                            <input type="email" id="regEmail" placeholder="iafinance@correo.com">
+                            <input type="email" id="regEmail" placeholder="correo@ejemplo.com">
                         </div>
                         
                         <div class="input-group">
@@ -1434,7 +1453,7 @@
                     </div>
                 </div>
 
-                <!-- CHARTS SECTION -->
+                <!-- CHARTS SECTION - VERSIÓN CORREGIDA -->
                 <div class="charts-section">
                     <!-- GRÁFICO DE BARRAS -->
                     <div class="chart-card">
@@ -1442,8 +1461,8 @@
                             <h3>Ingresos vs Gastos</h3>
                             <select class="chart-period" id="chartPeriod" onchange="changePeriod(this.value)">
                                 <option value="3months">3 meses</option>
-                                <option value="6months">6 meses</option>
-                                <option value="year" selected>1 año</option>
+                                <option value="6months" selected>6 meses</option>
+                                <option value="year">1 año (12 meses)</option>
                             </select>
                         </div>
                         <div class="chart-bars" id="chartBars"></div>
@@ -1714,21 +1733,35 @@
             if (email) alert('📧 Enlace enviado a ' + email);
         });
 
-        // DASHBOARD FUNCTIONS
+        // DASHBOARD FUNCTIONS - VERSIÓN CORREGIDA DEL GRÁFICO
         function renderChart() {
             const chartBars = document.getElementById('chartBars');
+            const period = document.getElementById('chartPeriod').value;
+            
             const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
             const incomes = [3200, 3500, 4100, 3800, 4200, 4800, 5100, 4900, 5300, 5700, 6100, 6500];
             const expenses = [2800, 2900, 3100, 3300, 3400, 3600, 3800, 3700, 3900, 4000, 4200, 4400];
             
             const currentMonth = new Date().getMonth();
-            const displayMonths = [];
-            const displayIncomes = [];
-            const displayExpenses = [];
+            let monthsToShow = [];
+            let displayIncomes = [];
+            let displayExpenses = [];
             
-            for (let i = 5; i >= 0; i--) {
+            // Determinar cantidad de meses según período seleccionado
+            let cantidadMeses = 6; // Por defecto 6 meses
+            
+            if (period === '3months') {
+                cantidadMeses = 3;
+            } else if (period === '6months') {
+                cantidadMeses = 6;
+            } else if (period === 'year') {
+                cantidadMeses = 12;
+            }
+            
+            // Generar los meses en orden cronológico (del más antiguo al más reciente)
+            for (let i = cantidadMeses - 1; i >= 0; i--) {
                 let index = (currentMonth - i + 12) % 12;
-                displayMonths.push(months[index]);
+                monthsToShow.push(months[index]);
                 displayIncomes.push(incomes[index]);
                 displayExpenses.push(expenses[index]);
             }
@@ -1736,15 +1769,22 @@
             let html = '';
             const maxValue = Math.max(...displayIncomes, ...displayExpenses);
             
-            for (let i = 0; i < 6; i++) {
+            // Ajustar el ancho de las barras según la cantidad
+            const barWidth = cantidadMeses === 12 ? 30 : 40;
+            const barInnerWidth = barWidth - 8;
+            const labelFontSize = cantidadMeses === 12 ? '0.6rem' : '0.7rem';
+            
+            for (let i = 0; i < cantidadMeses; i++) {
                 const incomeHeight = (displayIncomes[i] / maxValue) * 150;
                 const expenseHeight = (displayExpenses[i] / maxValue) * 150;
                 
                 html += `
-                    <div class="bar-group">
-                        <div class="bar income" style="height: ${incomeHeight}px;" data-tooltip="Ingresos: S/ ${displayIncomes[i].toLocaleString('es-PE')}"></div>
-                        <div class="bar expense" style="height: ${expenseHeight}px;" data-tooltip="Gastos: S/ ${displayExpenses[i].toLocaleString('es-PE')}"></div>
-                        <span class="bar-label">${displayMonths[i]}</span>
+                    <div class="bar-group" style="width: ${barWidth}px;">
+                        <div class="bar income" style="height: ${incomeHeight}px; width: ${barInnerWidth}px;" 
+                             data-tooltip="Ingresos: S/ ${displayIncomes[i].toLocaleString('es-PE')}"></div>
+                        <div class="bar expense" style="height: ${expenseHeight}px; width: ${barInnerWidth}px;" 
+                             data-tooltip="Gastos: S/ ${displayExpenses[i].toLocaleString('es-PE')}"></div>
+                        <span class="bar-label" style="font-size: ${labelFontSize};">${monthsToShow[i]}</span>
                     </div>
                 `;
             }
