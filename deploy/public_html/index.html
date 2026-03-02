@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IA Finance - Gestión Inteligente</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #044b52, #056d76);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            display: flex;
+            width: 100%;
+            max-width: 1300px;
+            min-height: 700px;
+            background: white;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+        }
+        
+        /* Lado Izquierdo */
+        .left-panel {
+            flex: 1.2;
+            background: linear-gradient(135deg, #056d76, #044b52);
+            color: white;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .logo-area {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .logo-circle {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            background: white;
+            padding: 10px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 4px solid rgba(255,255,255,0.3);
+        }
+        
+        .logo-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 50%;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+        
+        h1 span {
+            color: #ffd700;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 40px;
+        }
+        
+        .features {
+            margin-bottom: 40px;
+        }
+        
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 15px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .feature i {
+            font-size: 2rem;
+            color: #ffd700;
+            width: 40px;
+            text-align: center;
+        }
+        
+        .credentials {
+            background: rgba(0,0,0,0.2);
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .credentials h3 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .cred-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .cred-box {
+            padding: 15px;
+            border-radius: 10px;
+        }
+        
+        .cred-box.admin {
+            background: rgba(255,193,7,0.15);
+            border: 1px solid rgba(255,193,7,0.3);
+        }
+        
+        .cred-box.user {
+            background: rgba(40,167,69,0.15);
+            border: 1px solid rgba(40,167,69,0.3);
+        }
+        
+        .cred-box p {
+            font-family: monospace;
+            margin-top: 5px;
+        }
+        
+        /* Lado Derecho */
+        .right-panel {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 50px;
+            background: #f8f9fa;
+        }
+        
+        .form-box {
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            background: #e9ecef;
+            padding: 5px;
+            border-radius: 50px;
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            background: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .tab.active {
+            background: linear-gradient(135deg, #056d76, #044b52);
+            color: white;
+        }
+        
+        .form {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .form h2 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .form p {
+            color: #7f8c8d;
+            margin-bottom: 30px;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #34495e;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .input-group input:focus {
+            outline: none;
+            border-color: #056d76;
+            box-shadow: 0 0 0 4px rgba(5,109,118,0.1);
+        }
+        
+        .options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+        }
+        
+        .checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            color: #7f8c8d;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #056d76, #044b52);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(5,109,118,0.3);
+        }
+        
+        .btn-admin {
+            background: #ffc107;
+            color: #2c3e50;
+            margin-top: 10px;
+        }
+        
+        .btn-test {
+            background: #28a745;
+            color: white;
+            margin-top: 10px;
+        }
+        
+        .divider {
+            text-align: center;
+            margin: 25px 0;
+            position: relative;
+        }
+        
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #e0e0e0;
+        }
+        
+        .divider span {
+            position: relative;
+            background: white;
+            padding: 0 15px;
+            color: #95a5a6;
+        }
+        
+        .switch-mode {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .switch-mode a {
+            color: #056d76;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .cred-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Panel Izquierdo -->
+        <div class="left-panel">
+            <div class="logo-area">
+                <div class="logo-circle">
+                    <img src="assets/images/logo_proyecto.png" alt="Logo IA Finance" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiMwNTZkNzYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTIgMkMyIDIgMiAxMiAyIDEyczAgMTAgMTAgMTAgMTAgMCAxMC0xMCAwLTEwLTEwLTEweiIvPjxwYXRoIGQ9Ik0xMiA2djZsNCAyIi8+PC9zdmc+';">
+                </div>
+                <h1>IA <span>Finance</span></h1>
+                <p class="subtitle">Gestión Inteligente de Finanzas</p>
+            </div>
+            
+            <div class="features">
+                <div class="feature">
+                    <i class="fas fa-brain"></i>
+                    <div>
+                        <h4>IA Predictiva</h4>
+                        <p>Análisis inteligente de tus finanzas</p>
+                    </div>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-chart-line"></i>
+                    <div>
+                        <h4>Dashboard Avanzado</h4>
+                        <p>Métricas en tiempo real</p>
+                    </div>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-shield-alt"></i>
+                    <div>
+                        <h4>Seguridad Total</h4>
+                        <p>Tus datos siempre protegidos</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="credentials">
+                <h3><i class="fas fa-key"></i> Credenciales de Prueba</h3>
+                <div class="cred-grid">
+                    <div class="cred-box admin">
+                        <strong>👑 Administrador</strong>
+                        <p>📧 admin@iafinance.com</p>
+                        <p>🔑 Admin123!</p>
+                    </div>
+                    <div class="cred-box user">
+                        <strong>👤 Usuario Demo</strong>
+                        <p>📧 usuario@test.com</p>
+                        <p>🔑 Test123!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Panel Derecho -->
+        <div class="right-panel">
+            <div class="form-box">
+                <div class="tabs">
+                    <button class="tab active" id="loginTab"><i class="fas fa-sign-in-alt"></i> Iniciar Sesión</button>
+                    <button class="tab" id="registerTab"><i class="fas fa-user-plus"></i> Registrarse</button>
+                </div>
+                
+                <!-- Login Form -->
+                <div id="loginForm" class="form">
+                    <h2>Bienvenido de nuevo</h2>
+                    <p>Ingresa tus credenciales</p>
+                    
+                    <div class="input-group">
+                        <label>Correo electrónico</label>
+                        <input type="email" id="loginEmail" value="admin@iafinance.com">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Contraseña</label>
+                        <input type="password" id="loginPassword" value="Admin123!">
+                    </div>
+                    
+                    <div class="options">
+                        <label class="checkbox">
+                            <input type="checkbox"> Recordar sesión
+                        </label>
+                        <a href="#" id="forgotLink">¿Olvidaste tu contraseña?</a>
+                    </div>
+                    
+                    <button class="btn btn-primary" id="loginBtn">
+                        <span>Iniciar Sesión</span> <i class="fas fa-arrow-right"></i>
+                    </button>
+                    
+                    <button class="btn btn-admin" id="adminBtn">
+                        <i class="fas fa-crown"></i> Acceso Admin Rápido
+                    </button>
+                    
+                    <div class="divider"><span>o</span></div>
+                    
+                    <button class="btn btn-test" id="testBtn">
+                        <i class="fas fa-magic"></i> Autocompletar Demo
+                    </button>
+                </div>
+                
+                <!-- Register Form -->
+                <div id="registerForm" class="form" style="display: none;">
+                    <h2>Crear cuenta gratis</h2>
+                    <p>Comienza hoy mismo</p>
+                    
+                    <div class="input-group">
+                        <label>Nombre completo</label>
+                        <input type="text" id="regName">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Correo electrónico</label>
+                        <input type="email" id="regEmail">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Contraseña</label>
+                        <input type="password" id="regPassword">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Confirmar contraseña</label>
+                        <input type="password" id="regConfirm">
+                    </div>
+                    
+                    <button class="btn btn-primary" id="registerBtn">
+                        <span>Registrarse</span> <i class="fas fa-rocket"></i>
+                    </button>
+                    
+                    <button class="btn btn-test" id="testBtnRegister">
+                        <i class="fas fa-magic"></i> Autocompletar Demo
+                    </button>
+                </div>
+                
+                <div class="switch-mode">
+                    <p id="toRegister">¿No tienes cuenta? <a href="#">Regístrate aquí</a></p>
+                    <p id="toLogin" style="display: none;">¿Ya tienes cuenta? <a href="#">Inicia sesión</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const loginTab = document.getElementById('loginTab');
+        const registerTab = document.getElementById('registerTab');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const toRegister = document.getElementById('toRegister');
+        const toLogin = document.getElementById('toLogin');
+        
+        function showLogin() {
+            loginTab.classList.add('active');
+            registerTab.classList.remove('active');
+            loginForm.style.display = 'block';
+            registerForm.style.display = 'none';
+            toRegister.style.display = 'block';
+            toLogin.style.display = 'none';
+        }
+        
+        function showRegister() {
+            registerTab.classList.add('active');
+            loginTab.classList.remove('active');
+            registerForm.style.display = 'block';
+            loginForm.style.display = 'none';
+            toRegister.style.display = 'none';
+            toLogin.style.display = 'block';
+        }
+        
+        loginTab.addEventListener('click', showLogin);
+        registerTab.addEventListener('click', showRegister);
+        
+        toRegister.querySelector('a').addEventListener('click', (e) => {
+            e.preventDefault();
+            showRegister();
+        });
+        
+        toLogin.querySelector('a').addEventListener('click', (e) => {
+            e.preventDefault();
+            showLogin();
+        });
+        
+        // Credenciales
+        const admin = { email: 'admin@iafinance.com', pass: 'Admin123!' };
+        const demo = { email: 'usuario@test.com', pass: 'Test123!' };
+        
+        document.getElementById('loginBtn').addEventListener('click', function() {
+            const email = document.getElementById('loginEmail').value;
+            const pass = document.getElementById('loginPassword').value;
+            
+            if (!email || !pass) {
+                alert('❌ Completa todos los campos');
+                return;
+            }
+            
+            if ((email === admin.email && pass === admin.pass) || 
+                (email === demo.email && pass === demo.pass)) {
+                alert('✅ ¡Bienvenido!');
+            } else {
+                alert('❌ Credenciales incorrectas. Usa admin@iafinance.com / Admin123!');
+            }
+        });
+        
+        document.getElementById('adminBtn').addEventListener('click', () => {
+            document.getElementById('loginEmail').value = admin.email;
+            document.getElementById('loginPassword').value = admin.pass;
+            alert('📋 Credenciales de Admin cargadas');
+        });
+        
+        function fillDemo() {
+            if (loginForm.style.display === 'block') {
+                document.getElementById('loginEmail').value = demo.email;
+                document.getElementById('loginPassword').value = demo.pass;
+            } else {
+                document.getElementById('regName').value = 'Usuario Demo';
+                document.getElementById('regEmail').value = demo.email;
+                document.getElementById('regPassword').value = demo.pass;
+                document.getElementById('regConfirm').value = demo.pass;
+            }
+            alert('📋 Datos de Demo cargados');
+        }
+        
+        document.getElementById('testBtn').addEventListener('click', fillDemo);
+        document.getElementById('testBtnRegister').addEventListener('click', fillDemo);
+        
+        document.getElementById('registerBtn').addEventListener('click', function() {
+            const name = document.getElementById('regName').value;
+            const email = document.getElementById('regEmail').value;
+            const pass = document.getElementById('regPassword').value;
+            const confirm = document.getElementById('regConfirm').value;
+            
+            if (!name || !email || !pass || !confirm) {
+                alert('❌ Completa todos los campos');
+                return;
+            }
+            
+            if (pass !== confirm) {
+                alert('❌ Las contraseñas no coinciden');
+                return;
+            }
+            
+            alert('✅ Registro exitoso');
+        });
+        
+        document.getElementById('forgotLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            alert('📧 Función de recuperación');
+        });
+    </script>
+</body>
+</html>
