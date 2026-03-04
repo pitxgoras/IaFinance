@@ -1,25 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';
-
-export interface Transaction {
-  id: number;
-  icon: string;
-  description: string;
-  category: string;
-  amount: number;
-  type: 'income' | 'expense';
-  date: string;
-  status: 'completed' | 'pending';
-}
-
-export interface Category {
-  name: string;
-  percent: number;
-  color: string;
-  amount: number;
-  rotation: number;
-}
+import { DashboardService } from './dashboard.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -27,162 +9,172 @@ export interface Category {
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-  // Datos del usuario
-  userName: string = 'Usuario';
+  // Usuario
+  userName: string = '';
   userEmail: string = '';
-  userInitial: string = 'U';
+  userInitial: string = '';
   isAdmin: boolean = false;
+  currentDate: string = '';
   
-  // Fecha actual
-  currentDate = new Date().toLocaleDateString('es-ES', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  });
-
-  // Período seleccionado para gráficos
-  selectedPeriod: '3months' | '6months' | 'year' = '6months';
-  
-  // Colores
-  incomeColor = '#27ae60';
-  expenseColor = '#e74c3c';
-
-  // Datos de estadísticas (simulados pero personalizados por usuario)
+  // Stats
   stats = {
-    balance: 36600.00,
-    income: 6520.00,
-    expenses: 3840.00,
-    savings: 2100.00,
+    balance: 45890.75,
     balanceChange: 12.5,
-    incomeChange: 8.3,
-    expensesChange: -5.2,
-    savingsChange: 15.7
+    income: 12450.30,
+    incomeChange: 8.2,
+    expenses: 3560.45,
+    expensesChange: 3.1,
+    savings: 8890.30,
+    savingsChange: 15.3
   };
 
-  // Datos para gráficos dinámicos
-  chartData = {
-    '3months': {
-      labels: ['ENE', 'FEB', 'MAR'],
-      income: [6520, 6100, 6350],
-      expense: [3840, 3950, 3800]
-    },
-    '6months': {
-      labels: ['ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN'],
-      income: [6520, 6100, 6350, 6700, 6900, 7200],
-      expense: [3840, 3950, 3800, 4100, 4000, 4200]
-    },
-    'year': {
-      labels: ['ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN', 'JUL', 'AGO', 'SEP', 'OCT', 'NOV', 'DIC'],
-      income: [6520, 6100, 6350, 6700, 6900, 7200, 7100, 7300, 7500, 7700, 7600, 8000],
-      expense: [3840, 3950, 3800, 4100, 4000, 4200, 4300, 4250, 4400, 4500, 4450, 4600]
-    }
+  // Gráfico de barras
+  selectedPeriod: string = '3months';
+  incomeColor: string = '#27ae60';
+  expenseColor: string = '#e74c3c';
+  
+  currentChartData = {
+    labels: ['Ene', 'Feb', 'Mar'],
+    income: [8500, 9200, 12450],
+    expense: [2800, 3100, 3560]
   };
 
-  // Distribución de gastos
-  categories: Category[] = [
-    { name: 'Vivienda', percent: 40, color: '#10b1b0', amount: 1536, rotation: 0 },
-    { name: 'Alimentación', percent: 25, color: '#4a90e2', amount: 960, rotation: 144 },
-    { name: 'Transporte', percent: 20, color: '#9b59b6', amount: 768, rotation: 234 },
-    { name: 'Entretenimiento', percent: 15, color: '#e67e22', amount: 576, rotation: 306 }
+  // Categorías para gráfico circular
+  categories = [
+    { name: 'Vivienda', percent: 35, amount: 1246.16, color: '#10b1b0' },
+    { name: 'Alimentación', percent: 25, amount: 890.11, color: '#4a90e2' },
+    { name: 'Transporte', percent: 15, amount: 534.07, color: '#9b59b6' },
+    { name: 'Ocio', percent: 15, amount: 534.07, color: '#e67e22' },
+    { name: 'Otros', percent: 10, amount: 356.04, color: '#e74c3c' }
   ];
 
-  // Transacciones recientes
-  transactions: Transaction[] = [
-    { id: 1, icon: 'fa-money-bill-wave', description: 'Depósito de nómina', category: 'INGRESO', amount: 2250, type: 'income', date: 'Hoy', status: 'completed' },
-    { id: 2, icon: 'fa-shopping-cart', description: 'Compra en supermercado', category: 'SUPERMERCADO', amount: -245.80, type: 'expense', date: 'Ayer', status: 'completed' },
-    { id: 3, icon: 'fa-bolt', description: 'Recibo de luz', category: 'SERVICIOS', amount: -185.50, type: 'expense', date: '15 Feb', status: 'completed' },
-    { id: 4, icon: 'fa-wifi', description: 'Internet y cable', category: 'SERVICIOS', amount: -129.90, type: 'expense', date: '14 Feb', status: 'completed' },
-    { id: 5, icon: 'fa-utensils', description: 'Cena en restaurant', category: 'ALIMENTACIÓN', amount: -89.90, type: 'expense', date: '13 Feb', status: 'completed' },
-    { id: 6, icon: 'fa-laptop-code', description: 'Trabajo freelance', category: 'INGRESO', amount: 850, type: 'income', date: '10 Feb', status: 'pending' }
+  // Transacciones
+  transactions = [
+    { 
+      id: 1,
+      description: 'Nómina mensual',
+      category: 'Ingreso',
+      amount: 2850.00,
+      type: 'income',
+      icon: 'fa-money-bill-wave',
+      status: 'completed',
+      date: '2024-03-01'
+    },
+    { 
+      id: 2,
+      description: 'Pago de alquiler',
+      category: 'Vivienda',
+      amount: -850.00,
+      type: 'expense',
+      icon: 'fa-home',
+      status: 'completed',
+      date: '2024-03-02'
+    },
+    { 
+      id: 3,
+      description: 'Supermercado',
+      category: 'Alimentación',
+      amount: -156.32,
+      type: 'expense',
+      icon: 'fa-shopping-cart',
+      status: 'completed',
+      date: '2024-03-03'
+    },
+    { 
+      id: 4,
+      description: 'Freelance Web',
+      category: 'Ingreso Extra',
+      amount: 450.00,
+      type: 'income',
+      icon: 'fa-laptop-code',
+      status: 'pending',
+      date: '2024-03-04'
+    },
+    { 
+      id: 5,
+      description: 'Netflix',
+      category: 'Suscripción',
+      amount: -15.99,
+      type: 'expense',
+      icon: 'fa-film',
+      status: 'completed',
+      date: '2024-03-05'
+    }
   ];
 
   constructor(
     private router: Router,
+    private dashboardService: DashboardService,
     private authService: AuthService
   ) {}
 
-  ngOnInit() {
-    this.authService.getCurrentUser().subscribe(user => {
-      if (user) {
-        this.userName = this.authService.getUserFullName(user);
-        this.userEmail = user.email || '';
-        this.userInitial = this.userName.charAt(0).toUpperCase();
-        this.isAdmin = user.isAdmin || false;
-        
-        // Personalizar datos según el usuario
-        this.personalizeData(user);
-      }
+  ngOnInit(): void {
+    this.loadUserData();
+    this.loadDashboardData();
+    this.updateDate();
+  }
+
+  loadUserData(): void {
+    const user = this.authService.getCurrentUser();
+    if (user) {
+      this.userName = user.name || 'Usuario';
+      this.userEmail = user.email || 'usuario@iafinance.com';
+      this.userInitial = this.userName.charAt(0).toUpperCase();
+      this.isAdmin = user.role === 'admin';
+    }
+  }
+
+  loadDashboardData(): void {
+    // Cargar datos reales desde el backend
+    this.dashboardService.getStats().subscribe({
+      next: (data) => this.stats = data,
+      error: (err) => console.error('Error cargando stats', err)
+    });
+
+    this.dashboardService.getTransactions().subscribe({
+      next: (data) => this.transactions = data,
+      error: (err) => console.error('Error cargando transacciones', err)
     });
   }
 
-  // Personalizar datos para cada usuario
-  personalizeData(user: any) {
-    const userHash = user.email ? user.email.length : 1;
-    
-    // Ajustar montos según el usuario
-    this.stats.balance = 30000 + (userHash * 500);
-    this.stats.income = 6000 + (userHash * 100);
-    this.stats.expenses = 3500 + (userHash * 50);
-    this.stats.savings = this.stats.income - this.stats.expenses;
-    
-    // Ajustar transacciones
-    this.transactions = this.transactions.map((t, index) => ({
-      ...t,
-      amount: t.amount * (1 + (userHash % 10) / 100),
-      date: this.getRandomDate(index)
-    }));
+  updateDate(): void {
+    const today = new Date();
+    this.currentDate = today.toLocaleDateString('es-ES', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
   }
 
-  getRandomDate(index: number): string {
-    const dates = ['Hoy', 'Ayer', '15 Feb', '14 Feb', '13 Feb', '12 Feb'];
-    return dates[index % dates.length];
-  }
-
-  // ===== MÉTODOS DE GRÁFICOS =====
-  changePeriod(period: '3months' | '6months' | 'year') {
-    this.selectedPeriod = period;
-  }
-
-  get currentChartData() {
-    return this.chartData[this.selectedPeriod];
-  }
-
-  get maxValue(): number {
-    const data = this.currentChartData;
-    const maxIncome = Math.max(...data.income);
-    const maxExpense = Math.max(...data.expense);
-    return Math.max(maxIncome, maxExpense);
+  formatCurrency(value: number): string {
+    return new Intl.NumberFormat('es-ES', {
+      style: 'currency',
+      currency: 'EUR'
+    }).format(value);
   }
 
   getBarHeight(value: number): number {
-    return (value / this.maxValue) * 180;
+    const maxValue = Math.max(...this.currentChartData.income, ...this.currentChartData.expense);
+    return (value / maxValue) * 180;
   }
 
-  formatCurrency(amount: number): string {
-    return new Intl.NumberFormat('es-PE', {
-      style: 'currency',
-      currency: 'PEN',
-      minimumFractionDigits: 2
-    }).format(amount);
+  changePeriod(period: string): void {
+    this.dashboardService.getChartData(period).subscribe(data => {
+      this.currentChartData = data;
+    });
   }
 
-  // ===== MÉTODOS DE NAVEGACIÓN =====
-  navigateTo(route: string) {
-    this.router.navigate([route]);
+  navigateToTransactions(): void {
+    this.router.navigate(['/transactions']);
   }
 
-  navigateToTransactions() {
-    // Aquí iría la navegación a la página de transacciones
-    alert('Próximamente: Vista completa de transacciones');
+  toggleEditMode(): void {
+    console.log('Modo edición activado');
   }
 
-  logout() {
+  logout(): void {
     this.authService.logout();
     this.router.navigate(['/login']);
-  }
-
-  openChat() {
-    this.router.navigate(['/chat']);
   }
 }

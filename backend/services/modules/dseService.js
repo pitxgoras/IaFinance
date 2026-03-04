@@ -1,5 +1,4 @@
 // backend/services/modules/dseService.js
-
 class DSEService {
     
     // Ejecutar simulación financiera completa

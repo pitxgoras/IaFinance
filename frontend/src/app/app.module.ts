@@ -1,38 +1,38 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { DragDropModule } from '@angular/cdk/drag-drop';  // ← AHORA SÍ FUNCIONA
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LoginComponent } from './login/login.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { CfilComponent } from './pages/cfil/cfil.component';
-import { DseComponent } from './pages/dse/dse.component';
-import { PfseComponent } from './pages/pfse/pfse.component';
-import { IoieComponent } from './pages/ioie/ioie.component';
-import { EifComponent } from './pages/eif/eif.component';
+import { LoginComponent } from './components/login/login.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+
+// Módulos
+import { DseModule } from './pages/dse/dse.module';
+import { PfseModule } from './pages/pfse/pfse.module';
+import { IoieModule } from './pages/ioie/ioie.module';
+import { EifModule } from './pages/eif/eif.module';
+import { CfilModule } from './pages/cfil/cfil.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    DashboardComponent,
-    CfilComponent,
-    DseComponent,
-    PfseComponent,
-    IoieComponent,
-    EifComponent
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule,
     HttpClientModule,
-    DragDropModule  // ← AGREGADO
+    FormsModule,
+    ReactiveFormsModule,
+    DseModule,
+    PfseModule,
+    IoieModule,
+    EifModule,
+    CfilModule
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],  // ← AGREGADO
   providers: [],
   bootstrap: [AppComponent]
 })
