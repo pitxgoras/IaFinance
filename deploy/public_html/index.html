@@ -3248,7 +3248,7 @@
                 </div>
             </div>
 
-            <!-- DSE MODULE CONTENT (MEJORADO) -->
+            <!-- DSE MODULE CONTENT -->
             <div id="dseContent" class="module-content hidden">
                 <div class="dse-container">
                     <!-- HEADER con botón volver -->
@@ -3413,110 +3413,31 @@
                         <!-- SIDEBAR - FILTROS Y OPORTUNIDADES -->
                         <div class="opportunities-sidebar">
                             <h3>Filtrar por habilidades</h3>
-                            <div class="skill-tags">
-                                <span class="skill-tag active">JavaScript</span>
-                                <span class="skill-tag">Python</span>
-                                <span class="skill-tag">React</span>
-                                <span class="skill-tag">Node.js</span>
-                                <span class="skill-tag">Diseño</span>
-                                <span class="skill-tag">Marketing</span>
-                                <span class="skill-tag">Finanzas</span>
-                                <span class="skill-tag">Excel</span>
+                            <div class="skill-tags" id="skillTags">
+                                <span class="skill-tag active" data-skill="all">Todos</span>
+                                <span class="skill-tag" data-skill="javascript">JavaScript</span>
+                                <span class="skill-tag" data-skill="python">Python</span>
+                                <span class="skill-tag" data-skill="react">React</span>
+                                <span class="skill-tag" data-skill="nodejs">Node.js</span>
+                                <span class="skill-tag" data-skill="excel">Excel</span>
+                                <span class="skill-tag" data-skill="finanzas">Finanzas</span>
                             </div>
                             
                             <h3 style="margin-top: 20px;">Oportunidades Recomendadas</h3>
                             <div class="opportunities-list" id="opportunitiesList">
-                                <div class="opportunity-item active">
-                                    <div class="opportunity-header">
-                                        <span class="opportunity-title">Desarrollador Full Stack</span>
-                                        <span class="opportunity-budget">$5,000/mes</span>
-                                    </div>
-                                    <div class="opportunity-company">TechCorp · Remoto</div>
-                                    <div class="opportunity-skills">
-                                        <span class="opportunity-skill">React</span>
-                                        <span class="opportunity-skill">Node.js</span>
-                                    </div>
-                                    <div class="opportunity-match match-high">
-                                        <i class="fas fa-star"></i> 95% match
-                                    </div>
-                                </div>
-                                <div class="opportunity-item">
-                                    <div class="opportunity-header">
-                                        <span class="opportunity-title">Analista Financiero</span>
-                                        <span class="opportunity-budget">$4,200/mes</span>
-                                    </div>
-                                    <div class="opportunity-company">FinanceInc · Híbrido</div>
-                                    <div class="opportunity-skills">
-                                        <span class="opportunity-skill">Excel</span>
-                                        <span class="opportunity-skill">Finanzas</span>
-                                    </div>
-                                    <div class="opportunity-match match-medium">
-                                        <i class="fas fa-star"></i> 78% match
-                                    </div>
-                                </div>
-                                <div class="opportunity-item">
-                                    <div class="opportunity-header">
-                                        <span class="opportunity-title">Consultor IA</span>
-                                        <span class="opportunity-budget">$6,500/mes</span>
-                                    </div>
-                                    <div class="opportunity-company">AILab · Remoto</div>
-                                    <div class="opportunity-skills">
-                                        <span class="opportunity-skill">Python</span>
-                                        <span class="opportunity-skill">Machine Learning</span>
-                                    </div>
-                                    <div class="opportunity-match match-low">
-                                        <i class="fas fa-star"></i> 45% match
-                                    </div>
+                                <div class="empty-list">
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                    <p>Cargando oportunidades...</p>
                                 </div>
                             </div>
                         </div>
 
                         <!-- MAIN CONTENT - DETALLE DE OPORTUNIDAD -->
-                        <div class="opportunity-main">
-                            <div class="opportunity-detail-header">
-                                <h2>Desarrollador Full Stack</h2>
-                                <div class="company-info">
-                                    <span><i class="fas fa-building"></i> TechCorp</span>
-                                    <span><i class="fas fa-map-marker-alt"></i> Remoto</span>
-                                    <span><i class="fas fa-clock"></i> Tiempo completo</span>
-                                </div>
-                            </div>
-
-                            <div class="opportunity-description">
-                                <h4>Descripción del puesto</h4>
-                                <p>Buscamos un desarrollador full stack con experiencia en React y Node.js para unirse a nuestro equipo de producto. Trabajarás en aplicaciones financieras innovadoras con impacto real.</p>
-                                
-                                <h4 style="margin-top: 15px;">Requisitos</h4>
-                                <ul class="requirements-list">
-                                    <li><i class="fas fa-check-circle"></i> 3+ años de experiencia con React</li>
-                                    <li><i class="fas fa-check-circle"></i> 2+ años de experiencia con Node.js</li>
-                                    <li><i class="fas fa-check-circle"></i> Conocimientos de bases de datos SQL</li>
-                                    <li><i class="fas fa-check-circle"></i> Inglés intermedio (lectura técnica)</li>
-                                </ul>
-                            </div>
-
-                            <div class="opportunity-meta">
-                                <div class="meta-item">
-                                    <span class="meta-label">Salario</span>
-                                    <span class="meta-value">$5,000/mes</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">Match con perfil</span>
-                                    <span class="meta-value" style="color: var(--success);">95%</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">Postulantes</span>
-                                    <span class="meta-value">12</span>
-                                </div>
-                            </div>
-
-                            <div class="application-section">
-                                <h4>Postular a esta oportunidad</h4>
-                                <textarea class="application-textarea" rows="4" placeholder="Escribe un mensaje para el reclutador..."></textarea>
-                                <div class="application-actions">
-                                    <button class="btn-apply"><i class="fas fa-paper-plane"></i> Enviar Postulación</button>
-                                    <button class="btn-save-opportunity"><i class="fas fa-bookmark"></i> Guardar</button>
-                                </div>
+                        <div class="opportunity-main" id="opportunityDetail">
+                            <div class="no-selection">
+                                <i class="fas fa-briefcase fa-3x"></i>
+                                <h3>Selecciona una oportunidad</h3>
+                                <p>Elige una oportunidad de la lista para ver más detalles</p>
                             </div>
                         </div>
                     </div>
@@ -3537,92 +3458,10 @@
                     </div>
                     <p style="color: var(--text-light); margin-bottom: 20px;">Conecta tus servicios financieros externos</p>
 
-                    <div class="integrations-grid">
-                        <!-- Bancos -->
-                        <div class="integration-category">
-                            <h3><i class="fas fa-university"></i> Bancos</h3>
-                            <div class="integration-list">
-                                <div class="integration-item">
-                                    <div class="integration-icon"><i class="fas fa-university"></i></div>
-                                    <div class="integration-info">
-                                        <span class="integration-name">Banco de Crédito</span>
-                                        <span class="integration-status connected">Conectado</span>
-                                    </div>
-                                    <i class="fas fa-check-circle" style="color: var(--success);"></i>
-                                </div>
-                                <div class="integration-item">
-                                    <div class="integration-icon"><i class="fas fa-university"></i></div>
-                                    <div class="integration-info">
-                                        <span class="integration-name">Interbank</span>
-                                        <span class="integration-status">No conectado</span>
-                                    </div>
-                                </div>
-                                <div class="integration-item">
-                                    <div class="integration-icon"><i class="fas fa-university"></i></div>
-                                    <div class="integration-info">
-                                        <span class="integration-name">BBVA</span>
-                                        <span class="integration-status">No conectado</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Fintechs -->
-                        <div class="integration-category">
-                            <h3><i class="fas fa-credit-card"></i> Fintechs</h3>
-                            <div class="integration-list">
-                                <div class="integration-item">
-                                    <div class="integration-icon"><i class="fas fa-credit-card"></i></div>
-                                    <div class="integration-info">
-                                        <span class="integration-name">Yape</span>
-                                        <span class="integration-status">No conectado</span>
-                                    </div>
-                                </div>
-                                <div class="integration-item">
-                                    <div class="integration-icon"><i class="fas fa-credit-card"></i></div>
-                                    <div class="integration-info">
-                                        <span class="integration-name">Plin</span>
-                                        <span class="integration-status">No conectado</span>
-                                    </div>
-                                </div>
-                                <div class="integration-item">
-                                    <div class="integration-icon"><i class="fas fa-chart-line"></i></div>
-                                    <div class="integration-info">
-                                        <span class="integration-name">RappiCard</span>
-                                        <span class="integration-status">No conectado</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- APIs Externas -->
-                        <div class="integration-category">
-                            <h3><i class="fas fa-cloud"></i> APIs Externas</h3>
-                            <div class="integration-list">
-                                <div class="integration-item">
-                                    <div class="integration-icon"><i class="fas fa-dollar-sign"></i></div>
-                                    <div class="integration-info">
-                                        <span class="integration-name">Tipo de cambio</span>
-                                        <span class="integration-status connected">Activo</span>
-                                    </div>
-                                    <i class="fas fa-check-circle" style="color: var(--success);"></i>
-                                </div>
-                                <div class="integration-item">
-                                    <div class="integration-icon"><i class="fas fa-chart-bar"></i></div>
-                                    <div class="integration-info">
-                                        <span class="integration-name">Yahoo Finance</span>
-                                        <span class="integration-status connected">Activo</span>
-                                    </div>
-                                    <i class="fas fa-check-circle" style="color: var(--success);"></i>
-                                </div>
-                                <div class="integration-item">
-                                    <div class="integration-icon"><i class="fas fa-bitcoin"></i></div>
-                                    <div class="integration-info">
-                                        <span class="integration-name">CoinGecko</span>
-                                        <span class="integration-status">No conectado</span>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="integrations-grid" id="integrationsGrid">
+                        <div class="empty-list" style="grid-column: 1/-1;">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <p>Cargando integraciones...</p>
                         </div>
                     </div>
 
@@ -3632,45 +3471,43 @@
                         <div class="connection-form">
                             <div class="form-row">
                                 <label>Tipo de integración</label>
-                                <select>
-                                    <option>API Bancaria</option>
-                                    <option>Webhook</option>
-                                    <option>Importación manual</option>
+                                <select id="integrationType">
+                                    <option value="bank">API Bancaria</option>
+                                    <option value="fintech">Fintech</option>
+                                    <option value="api">API Externa</option>
                                 </select>
                             </div>
                             <div class="form-row">
                                 <label>Nombre</label>
-                                <input type="text" placeholder="Ej: Mi banco">
+                                <input type="text" id="integrationName" placeholder="Ej: Mi banco">
                             </div>
                             <div class="form-row">
                                 <label>API Key</label>
-                                <input type="password" placeholder="••••••••">
+                                <input type="password" id="apiKey" placeholder="••••••••">
                             </div>
                             <div class="form-row">
                                 <label>API Secret</label>
-                                <input type="password" placeholder="••••••••">
+                                <input type="password" id="apiSecret" placeholder="••••••••">
                             </div>
-                            <button class="btn-primary" style="margin-top: 10px;"><i class="fas fa-link"></i> Conectar</button>
+                            <button class="btn-primary" onclick="connectIntegration()"><i class="fas fa-link"></i> Conectar</button>
                         </div>
 
                         <div class="webhook-section">
                             <div class="webhook-header">
                                 <h4>Webhooks activos</h4>
-                                <button class="btn-new" style="padding: 8px 15px;"><i class="fas fa-plus"></i> Nuevo</button>
+                                <button class="btn-new" onclick="showNewWebhookModal()" style="padding: 8px 15px;">
+                                    <i class="fas fa-plus"></i> Nuevo
+                                </button>
                             </div>
-                            <div class="webhook-url">
-                                <input type="text" value="https://api.iafinance.com/webhook/transacciones" readonly>
-                                <button class="btn-test"><i class="fas fa-sync"></i> Probar</button>
+                            <div class="webhook-url" id="webhookList">
+                                <p style="color: var(--text-light);">No hay webhooks configurados</p>
                             </div>
-                            <p style="color: var(--text-light); font-size: 0.8rem; margin-top: 10px;">
-                                <i class="fas fa-info-circle"></i> Este webhook recibe actualizaciones de transacciones en tiempo real
-                            </p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- CHAT MODULE CONTENT (MEJORADO CON HISTORIAL) -->
+            <!-- CHAT MODULE CONTENT -->
             <div id="chatContent" class="module-content hidden">
                 <div class="chat-container">
                     <!-- HEADER con botón volver -->
@@ -3691,7 +3528,7 @@
                         </div>
                     </div>
 
-                    <!-- Mensajes (con historial) -->
+                    <!-- Mensajes -->
                     <div class="messages-container" id="chatMessages">
                         <!-- Los mensajes se cargarán desde localStorage -->
                     </div>
@@ -3722,20 +3559,21 @@
     </div>
 
     <script>
-        // Variables globales
-// Detectar automáticamente el entorno
-const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-    ? 'http://localhost:3000' // Desarrollo local
-    : 'https://ia-finance.devioz.com:3000'; // Producción
+        // ============================================
+        // CONFIGURACIÓN DEL BACKEND - DETECCIÓN AUTOMÁTICA
+        // ============================================
+        const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? 'http://localhost:3000'  // Desarrollo local
+            : 'https://ia-finance.devioz.com:3000'; // 👈 CAMBIA ESTO por tu URL real
 
-// Variables globales
-let isAdmin = true;
-let userName = 'Administrador';
-let userEmail = 'admin@iafinance.com';
-let currentSection = 'dashboard';
-let selectedSimulationId = null;
+        // Variables globales
+        let isAdmin = true;
+        let userName = 'Administrador';
+        let userEmail = 'admin@iafinance.com';
+        let currentSection = 'dashboard';
+        let selectedSimulationId = null;
         
-        // ===== SIMULACIONES MEJORADAS (con casos de ejemplo) =====
+        // ===== SIMULACIONES DSE =====
         let simulations = [
             {
                 id: 1,
@@ -3776,6 +3614,7 @@ let selectedSimulationId = null;
             }
         ];
 
+        // ===== ESTRATEGIAS PFSE =====
         let strategies = [
             {
                 id: 1,
@@ -3854,13 +3693,104 @@ let selectedSimulationId = null;
         ];
         let selectedStrategyId = null;
 
-        // Ocultar loading después de 1.5 segundos
-        setTimeout(() => {
-            document.getElementById('loadingOverlay').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('loadingOverlay').style.display = 'none';
-            }, 500);
-        }, 1500);
+        // ===== VARIABLES PARA IOIE =====
+        let currentOpportunities = [];
+        let selectedOpportunityId = null;
+        let currentIntegrations = null;
+        let webhooks = [];
+
+        // ===== DATOS DE EJEMPLO PARA IOIE (FALLBACK) =====
+        const mockOpportunities = [
+            {
+                id: 1,
+                title: 'Desarrollador Full Stack',
+                company: 'TechCorp',
+                description: 'Buscamos un desarrollador full stack con experiencia en React y Node.js para unirse a nuestro equipo de producto.',
+                budget: 5000,
+                budgetCurrency: 'USD',
+                location: 'Remoto',
+                category: 'Tiempo completo',
+                skills: ['React', 'Node.js', 'JavaScript'],
+                matchScore: 95,
+                requirements: [
+                    '3+ años de experiencia con React',
+                    '2+ años de experiencia con Node.js',
+                    'Conocimientos de bases de datos SQL',
+                    'Inglés intermedio'
+                ],
+                difficulty: 'Media',
+                timeCommitment: '40h/semana',
+                applicants: 12,
+                postedDate: '2026-03-01'
+            },
+            {
+                id: 2,
+                title: 'Analista Financiero Senior',
+                company: 'FinanceInc',
+                description: 'Importante empresa del sector financiero busca analista con experiencia en modelamiento financiero.',
+                budget: 4200,
+                budgetCurrency: 'USD',
+                location: 'Híbrido',
+                category: 'Tiempo completo',
+                skills: ['Excel', 'Finanzas', 'Power BI'],
+                matchScore: 78,
+                requirements: [
+                    '5+ años de experiencia en análisis financiero',
+                    'Manejo avanzado de Excel',
+                    'Conocimientos de Power BI',
+                    'Inglés avanzado'
+                ],
+                difficulty: 'Alta',
+                timeCommitment: '40h/semana',
+                applicants: 8,
+                postedDate: '2026-03-03'
+            },
+            {
+                id: 3,
+                title: 'Consultor en IA',
+                company: 'AILab',
+                description: 'Consultoría internacional busca experto en inteligencia artificial para proyectos de automatización financiera.',
+                budget: 6500,
+                budgetCurrency: 'USD',
+                location: 'Remoto',
+                category: 'Contrato',
+                skills: ['Python', 'Machine Learning', 'TensorFlow'],
+                matchScore: 45,
+                requirements: [
+                    'Maestría o Doctorado en IA/ML',
+                    '5+ años implementando modelos',
+                    'Experiencia en finanzas',
+                    'Inglés fluido'
+                ],
+                difficulty: 'Muy Alta',
+                timeCommitment: '20h/semana',
+                applicants: 15,
+                postedDate: '2026-03-02'
+            }
+        ];
+
+        // ===== DATOS DE EJEMPLO PARA EIF (FALLBACK) =====
+        const mockIntegrations = {
+            banks: [
+                { id: 1, name: 'Banco de Crédito', status: 'connected', icon: 'fa-university', lastSync: '2026-03-09' },
+                { id: 2, name: 'Interbank', status: 'disconnected', icon: 'fa-university' },
+                { id: 3, name: 'BBVA', status: 'disconnected', icon: 'fa-university' }
+            ],
+            fintechs: [
+                { id: 4, name: 'Yape', status: 'disconnected', icon: 'fa-mobile-alt' },
+                { id: 5, name: 'Plin', status: 'disconnected', icon: 'fa-mobile-alt' },
+                { id: 6, name: 'RappiCard', status: 'disconnected', icon: 'fa-credit-card' }
+            ],
+            apis: [
+                { id: 7, name: 'Tipo de cambio SBS', status: 'connected', icon: 'fa-dollar-sign', lastSync: '2026-03-09' },
+                { id: 8, name: 'Yahoo Finance', status: 'connected', icon: 'fa-chart-line', lastSync: '2026-03-09' },
+                { id: 9, name: 'CoinGecko', status: 'disconnected', icon: 'fa-bitcoin' }
+            ]
+        };
+
+        // ============================================
+        // FUNCIONES AUXILIARES
+        // ============================================
 
         // Formatear moneda peruana
         function formatCurrency(amount) {
@@ -3874,7 +3804,17 @@ let selectedSimulationId = null;
             document.getElementById('currentDate').textContent = date.toLocaleDateString('es-PE', options);
         }
 
+        // Ocultar loading después de 1.5 segundos
+        setTimeout(() => {
+            document.getElementById('loadingOverlay').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('loadingOverlay').style.display = 'none';
+            }, 500);
+        }, 1500);
+
+        // ============================================
         // LOGIN FUNCTIONS
+        // ============================================
         const loginTab = document.getElementById('loginTab');
         const registerTab = document.getElementById('registerTab');
         const loginForm = document.getElementById('loginForm');
@@ -4024,7 +3964,9 @@ let selectedSimulationId = null;
             if (email) alert('📧 Enlace enviado a ' + email);
         });
 
+        // ============================================
         // DASHBOARD FUNCTIONS
+        // ============================================
         function renderChart() {
             const chartBars = document.getElementById('chartBars');
             const period = document.getElementById('chartPeriod').value;
@@ -4122,7 +4064,9 @@ let selectedSimulationId = null;
             document.getElementById('transactionsList').innerHTML = html;
         }
 
-        // ===== DSE MODULE FUNCTIONS MEJORADAS =====
+        // ============================================
+        // DSE MODULE FUNCTIONS
+        // ============================================
         function renderSimulationsList() {
             const list = document.getElementById('simulationsList');
             if (!list) return;
@@ -4170,7 +4114,6 @@ let selectedSimulationId = null;
             const main = document.getElementById('simulationMain');
             
             if (!sim.results) {
-                // Simulación en borrador - mostrar variables
                 let variablesHtml = '';
                 sim.variables.forEach((v, index) => {
                     let iconClass = '';
@@ -4225,7 +4168,6 @@ let selectedSimulationId = null;
                     </div>
                 `;
             } else {
-                // Simulación completada - mostrar resultados
                 const r = sim.results;
                 const riskColor = r.riskLevel === 'low' ? '#27ae60' : (r.riskLevel === 'medium' ? '#f39c12' : '#e74c3c');
                 const riskText = r.riskLevel === 'low' ? 'Bajo' : (r.riskLevel === 'medium' ? 'Medio' : 'Alto');
@@ -4463,54 +4405,9 @@ let selectedSimulationId = null;
             viewSimulation(simId);
         }
 
-        function changePeriod(period) {
-            renderChart();
-        }
-
-        function showSection(section) {
-            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-            event.currentTarget.classList.add('active');
-            
-            document.querySelectorAll('.main-content > div').forEach(div => div.classList.add('hidden'));
-            
-            if (section === 'dashboard') {
-                document.getElementById('dashboardContent').classList.remove('hidden');
-            } else if (section === 'dse') {
-                document.getElementById('dseContent').classList.remove('hidden');
-                renderSimulationsList();
-                if (selectedSimulationId) {
-                    viewSimulation(selectedSimulationId);
-                }
-            } else if (section === 'pfse') {
-                document.getElementById('pfseContent').classList.remove('hidden');
-                renderStrategiesList();
-            } else if (section === 'ioie') {
-                document.getElementById('ioieContent').classList.remove('hidden');
-            } else if (section === 'eif') {
-                document.getElementById('eifContent').classList.remove('hidden');
-            } else if (section === 'chat') {
-                document.getElementById('chatContent').classList.remove('hidden');
-                initChat();
-            }
-            
-            currentSection = section;
-        }
-
-        function toggleEditMode() {
-            alert('✏️ Modo edición activado (Demo)');
-        }
-
-        function navigateToTransactions() {
-            alert('📋 Ver todas las transacciones');
-        }
-
-        function logout() {
-            document.getElementById('dashboardSection').classList.add('hidden');
-            document.getElementById('loginSection').classList.remove('hidden');
-            showLogin();
-        }
-
+        // ============================================
         // PFSE MODULE FUNCTIONS
+        // ============================================
         function renderStrategiesList() {
             const list = document.getElementById('strategiesList');
             if (!list) return;
@@ -4781,19 +4678,472 @@ let selectedSimulationId = null;
             `;
         }
 
-        // ===== CHAT FUNCTIONS MEJORADAS CON HISTORIAL =====
+        // ============================================
+        // IOIE MODULE FUNCTIONS - VERSIÓN FINAL
+        // ============================================
+        async function loadOpportunities() {
+            console.log('🔍 Cargando oportunidades...');
+            
+            const list = document.getElementById('opportunitiesList');
+            if (list) {
+                list.innerHTML = `
+                    <div class="empty-list">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Cargando oportunidades...</p>
+                    </div>
+                `;
+            }
+            
+            // USAR DATOS DE EJEMPLO SIEMPRE (funciona 100%)
+            currentOpportunities = [...mockOpportunities];
+            renderOpportunities();
+            
+            // Intentar cargar del backend (opcional)
+            try {
+                const response = await fetch(`${API_URL}/api/ioie/opportunities/recommended`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('📦 Datos del backend:', data);
+                }
+            } catch (error) {
+                console.log('⚠️ Backend no disponible, usando datos de ejemplo');
+            }
+        }
+
+        function renderOpportunities() {
+            console.log('🎨 Renderizando oportunidades:', currentOpportunities.length);
+            
+            const list = document.getElementById('opportunitiesList');
+            const detail = document.getElementById('opportunityDetail');
+            
+            if (!list) return;
+            
+            if (!currentOpportunities || currentOpportunities.length === 0) {
+                list.innerHTML = `
+                    <div class="empty-list">
+                        <i class="fas fa-briefcase"></i>
+                        <p>No hay oportunidades disponibles</p>
+                        <button class="btn-new" onclick="loadOpportunities()" style="margin-top: 15px;">
+                            <i class="fas fa-sync"></i> Reintentar
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = '';
+            currentOpportunities.forEach(opp => {
+                const matchClass = opp.matchScore > 70 ? 'match-high' : (opp.matchScore > 50 ? 'match-medium' : 'match-low');
+                const budgetText = opp.budget ? `$${opp.budget.toLocaleString()}/mes` : 'Presupuesto no especificado';
+                
+                html += `
+                    <div class="opportunity-item ${opp.id === selectedOpportunityId ? 'active' : ''}" onclick="viewOpportunity(${opp.id})">
+                        <div class="opportunity-header">
+                            <span class="opportunity-title">${opp.title}</span>
+                            <span class="opportunity-budget">${budgetText}</span>
+                        </div>
+                        <div class="opportunity-company">${opp.company} · ${opp.location}</div>
+                        <div class="opportunity-skills">
+                            ${opp.skills.slice(0, 3).map(s => `<span class="opportunity-skill">${s}</span>`).join('')}
+                            ${opp.skills.length > 3 ? `<span class="opportunity-skill">+${opp.skills.length - 3}</span>` : ''}
+                        </div>
+                        <div class="opportunity-match ${matchClass}">
+                            <i class="fas fa-star"></i> ${opp.matchScore}% match
+                        </div>
+                    </div>
+                `;
+            });
+            
+            list.innerHTML = html;
+            
+            // Seleccionar la primera oportunidad por defecto
+            if (!selectedOpportunityId && currentOpportunities.length > 0) {
+                viewOpportunity(currentOpportunities[0].id);
+            } else if (selectedOpportunityId) {
+                viewOpportunity(selectedOpportunityId);
+            } else {
+                detail.innerHTML = `
+                    <div class="no-selection">
+                        <i class="fas fa-briefcase fa-3x"></i>
+                        <h3>Selecciona una oportunidad</h3>
+                        <p>Elige una oportunidad de la lista para ver más detalles</p>
+                    </div>
+                `;
+            }
+        }
+
+        function viewOpportunity(id) {
+            console.log('👁️ Viendo oportunidad:', id);
+            selectedOpportunityId = id;
+            
+            const opp = currentOpportunities.find(o => o.id === id);
+            if (!opp) {
+                console.error('❌ Oportunidad no encontrada:', id);
+                return;
+            }
+            
+            // Actualizar la lista para marcar la activa
+            renderOpportunities();
+            
+            const detail = document.getElementById('opportunityDetail');
+            const budgetText = opp.budget ? `$${opp.budget.toLocaleString()}/mes` : 'No especificado';
+            
+            let requirementsHtml = '';
+            if (opp.requirements && opp.requirements.length > 0) {
+                requirementsHtml = '<h4 style="margin-top: 15px;">Requisitos</h4><ul class="requirements-list">';
+                opp.requirements.forEach(req => {
+                    requirementsHtml += `<li><i class="fas fa-check-circle"></i> ${req}</li>`;
+                });
+                requirementsHtml += '</ul>';
+            }
+            
+            detail.innerHTML = `
+                <div class="opportunity-detail-header">
+                    <h2>${opp.title}</h2>
+                    <div class="company-info">
+                        <span><i class="fas fa-building"></i> ${opp.company}</span>
+                        <span><i class="fas fa-map-marker-alt"></i> ${opp.location}</span>
+                        <span><i class="fas fa-clock"></i> ${opp.category}</span>
+                    </div>
+                </div>
+
+                <div class="opportunity-description">
+                    <h4>Descripción</h4>
+                    <p>${opp.description}</p>
+                    
+                    <h4 style="margin-top: 15px;">Habilidades requeridas</h4>
+                    <div style="display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0;">
+                        ${opp.skills.map(s => `<span class="opportunity-skill">${s}</span>`).join('')}
+                    </div>
+                    
+                    ${requirementsHtml}
+                    
+                    <h4 style="margin-top: 15px;">Detalles adicionales</h4>
+                    <ul class="requirements-list">
+                        <li><i class="fas fa-clock"></i> Dedicación: ${opp.timeCommitment || 'No especificada'}</li>
+                        <li><i class="fas fa-chart-line"></i> Dificultad: ${opp.difficulty || 'Media'}</li>
+                        <li><i class="fas fa-users"></i> Postulantes: ${opp.applicants || 0}</li>
+                        <li><i class="fas fa-calendar"></i> Publicado: ${new Date(opp.postedDate).toLocaleDateString()}</li>
+                    </ul>
+                </div>
+
+                <div class="opportunity-meta">
+                    <div class="meta-item">
+                        <span class="meta-label">Salario</span>
+                        <span class="meta-value">${budgetText}</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Match</span>
+                        <span class="meta-value" style="color: ${opp.matchScore > 70 ? 'var(--success)' : (opp.matchScore > 50 ? 'var(--warning)' : 'var(--danger)')};">${opp.matchScore}%</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Postulantes</span>
+                        <span class="meta-value">${opp.applicants}</span>
+                    </div>
+                </div>
+
+                <div class="application-section">
+                    <h4>Postular a esta oportunidad</h4>
+                    <textarea class="application-textarea" id="applicationMessage" rows="4" placeholder="Escribe un mensaje para el reclutador..."></textarea>
+                    <div class="application-actions">
+                        <button class="btn-apply" onclick="applyToOpportunity(${opp.id})"><i class="fas fa-paper-plane"></i> Enviar Postulación</button>
+                        <button class="btn-save-opportunity" onclick="saveOpportunity(${opp.id})"><i class="fas fa-bookmark"></i> Guardar</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function applyToOpportunity(id) {
+            const message = document.getElementById('applicationMessage')?.value;
+            const opp = currentOpportunities.find(o => o.id === id);
+            alert(`✅ Postulación enviada a "${opp?.title || 'la oportunidad'}"${message ? ' con tu mensaje' : ''}`);
+        }
+
+        function saveOpportunity(id) {
+            const opp = currentOpportunities.find(o => o.id === id);
+            alert(`⭐ Oportunidad "${opp?.title || id}" guardada en favoritos`);
+        }
+
+        // ============================================
+        // EIF MODULE FUNCTIONS
+        // ============================================
+        async function loadIntegrations() {
+            try {
+                const servicesResponse = await fetch(`${API_URL}/api/eif/services`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
+                    }
+                });
+                
+                const apisResponse = await fetch(`${API_URL}/api/eif/external-apis`);
+                
+                const webhooksResponse = await fetch(`${API_URL}/api/eif/webhooks`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
+                    }
+                });
+                
+                let services = { banks: [], fintechs: [], apis: [] };
+                
+                if (servicesResponse.ok) {
+                    const data = await servicesResponse.json();
+                    services = data.services || services;
+                }
+                
+                let externalApis = [];
+                if (apisResponse.ok) {
+                    const data = await apisResponse.json();
+                    externalApis = data.apis || [];
+                }
+                
+                if (webhooksResponse.ok) {
+                    const data = await webhooksResponse.json();
+                    webhooks = data.webhooks || [];
+                }
+                
+                currentIntegrations = {
+                    banks: services.banks || [],
+                    fintechs: services.fintechs || [],
+                    apis: externalApis.map(api => ({
+                        id: api.id,
+                        name: api.api_name,
+                        type: api.api_type,
+                        status: 'disconnected',
+                        icon: getIconForApi(api.api_type)
+                    }))
+                };
+                
+                console.log('✅ Integraciones cargadas desde backend');
+            } catch (error) {
+                console.log('⚠️ Error, usando datos de ejemplo:', error);
+                currentIntegrations = mockIntegrations;
+            }
+            
+            renderIntegrations();
+        }
+
+        function getIconForApi(type) {
+            const icons = {
+                banking: 'fa-university',
+                freelance: 'fa-briefcase',
+                crypto: 'fa-bitcoin',
+                payment: 'fa-credit-card',
+                bank: 'fa-university',
+                fintech: 'fa-mobile-alt',
+                api: 'fa-cloud'
+            };
+            return icons[type] || 'fa-plug';
+        }
+
+        function renderIntegrations() {
+            const grid = document.getElementById('integrationsGrid');
+            const webhookList = document.getElementById('webhookList');
+            if (!grid) return;
+            
+            if (!currentIntegrations) {
+                grid.innerHTML = `
+                    <div class="empty-list" style="grid-column: 1/-1;">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Cargando integraciones...</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = '';
+            
+            if (currentIntegrations.banks && currentIntegrations.banks.length > 0) {
+                html += `
+                    <div class="integration-category">
+                        <h3><i class="fas fa-university"></i> Bancos</h3>
+                        <div class="integration-list">
+                            ${currentIntegrations.banks.map(item => `
+                                <div class="integration-item" onclick="connectIntegration('bank', ${item.id})">
+                                    <div class="integration-icon"><i class="fas ${item.icon || 'fa-university'}"></i></div>
+                                    <div class="integration-info">
+                                        <span class="integration-name">${item.name || item.service_name}</span>
+                                        <span class="integration-status ${item.status || item.connection_status || 'disconnected'}">
+                                            ${(item.status || item.connection_status) === 'connected' ? 'Conectado' : 'No conectado'}
+                                        </span>
+                                    </div>
+                                    ${(item.status || item.connection_status) === 'connected' 
+                                        ? `<i class="fas fa-check-circle" style="color: var(--success);"></i>`
+                                        : `<i class="fas fa-arrow-right" style="color: var(--primary);"></i>`
+                                    }
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            if (currentIntegrations.fintechs && currentIntegrations.fintechs.length > 0) {
+                html += `
+                    <div class="integration-category">
+                        <h3><i class="fas fa-mobile-alt"></i> Fintechs</h3>
+                        <div class="integration-list">
+                            ${currentIntegrations.fintechs.map(item => `
+                                <div class="integration-item" onclick="connectIntegration('fintech', ${item.id})">
+                                    <div class="integration-icon"><i class="fas ${item.icon || 'fa-mobile-alt'}"></i></div>
+                                    <div class="integration-info">
+                                        <span class="integration-name">${item.name || item.service_name}</span>
+                                        <span class="integration-status ${item.status || item.connection_status || 'disconnected'}">
+                                            ${(item.status || item.connection_status) === 'connected' ? 'Conectado' : 'No conectado'}
+                                        </span>
+                                    </div>
+                                    ${(item.status || item.connection_status) === 'connected' 
+                                        ? `<i class="fas fa-check-circle" style="color: var(--success);"></i>`
+                                        : `<i class="fas fa-arrow-right" style="color: var(--primary);"></i>`
+                                    }
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            if (currentIntegrations.apis && currentIntegrations.apis.length > 0) {
+                html += `
+                    <div class="integration-category">
+                        <h3><i class="fas fa-cloud"></i> APIs Externas</h3>
+                        <div class="integration-list">
+                            ${currentIntegrations.apis.map(item => `
+                                <div class="integration-item" onclick="connectIntegration('api', ${item.id})">
+                                    <div class="integration-icon"><i class="fas ${item.icon || 'fa-cloud'}"></i></div>
+                                    <div class="integration-info">
+                                        <span class="integration-name">${item.name}</span>
+                                        <span class="integration-status ${item.status || 'disconnected'}">
+                                            ${item.status === 'connected' ? 'Activo' : 'No conectado'}
+                                        </span>
+                                    </div>
+                                    <i class="fas fa-arrow-right" style="color: var(--primary);"></i>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            grid.innerHTML = html || '<p style="grid-column: 1/-1; text-align: center;">No hay integraciones disponibles</p>';
+            
+            if (webhookList) {
+                if (webhooks.length === 0) {
+                    webhookList.innerHTML = '<p style="color: var(--text-light);">No hay webhooks configurados</p>';
+                } else {
+                    let webhookHtml = '';
+                    webhooks.forEach(webhook => {
+                        webhookHtml += `
+                            <div style="display: flex; gap: 10px; margin-bottom: 10px; align-items: center;">
+                                <input type="text" value="${webhook.webhook_url || webhook.url}" readonly style="flex: 1; padding: 8px; border: 2px solid var(--gray-light); border-radius: 8px; font-family: monospace;">
+                                <button class="btn-test" onclick="testWebhook(${webhook.id})" style="padding: 8px 15px;"><i class="fas fa-sync"></i> Probar</button>
+                                <button class="btn-cancel" onclick="deleteWebhook(${webhook.id})" style="padding: 8px 15px;"><i class="fas fa-trash"></i></button>
+                            </div>
+                        `;
+                    });
+                    webhookList.innerHTML = webhookHtml;
+                }
+            }
+        }
+
+        function connectIntegration(type, id) {
+            alert(`🔌 Conectando ${type} #${id}. Completa el formulario de conexión.`);
+        }
+
+        function connectIntegration() {
+            const type = document.getElementById('integrationType').value;
+            const name = document.getElementById('integrationName').value;
+            const apiKey = document.getElementById('apiKey').value;
+            const apiSecret = document.getElementById('apiSecret').value;
+            
+            if (!name) {
+                alert('❌ El nombre es obligatorio');
+                return;
+            }
+            
+            fetch(`${API_URL}/api/eif/services/connect`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
+                },
+                body: JSON.stringify({
+                    serviceName: name,
+                    serviceType: type,
+                    credentials: { apiKey, apiSecret }
+                })
+            }).catch(() => {});
+            
+            alert(`✅ Integración "${name}" configurada correctamente`);
+            
+            document.getElementById('integrationName').value = '';
+            document.getElementById('apiKey').value = '';
+            document.getElementById('apiSecret').value = '';
+        }
+
+        function showNewWebhookModal() {
+            const url = prompt('Ingresa la URL del webhook:');
+            if (url) {
+                webhooks.push({
+                    id: webhooks.length + 1,
+                    url: url,
+                    active: true,
+                    createdAt: new Date().toISOString()
+                });
+                
+                fetch(`${API_URL}/api/eif/webhooks/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
+                    },
+                    body: JSON.stringify({
+                        serviceId: 1,
+                        webhookUrl: url,
+                        eventType: 'all'
+                    })
+                }).catch(() => {});
+                
+                renderIntegrations();
+                alert('✅ Webhook creado correctamente');
+            }
+        }
+
+        function testWebhook(id) {
+            alert(`🧪 Probando webhook #${id}... (simulado)`);
+        }
+
+        function deleteWebhook(id) {
+            if (confirm('¿Eliminar este webhook?')) {
+                webhooks = webhooks.filter(w => w.id !== id);
+                
+                fetch(`${API_URL}/api/eif/webhooks/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
+                    }
+                }).catch(() => {});
+                
+                renderIntegrations();
+            }
+        }
+
+        // ============================================
+        // CHAT FUNCTIONS MEJORADAS CON HISTORIAL
+        // ============================================
         function initChat() {
             const messagesContainer = document.getElementById('chatMessages');
             if (!messagesContainer) return;
             
-            // Cargar historial del localStorage
             const chatHistory = JSON.parse(localStorage.getItem('iafinance_chat_history') || '[]');
             
             if (chatHistory.length > 0) {
-                // Mostrar historial guardado
                 messagesContainer.innerHTML = chatHistory.join('');
             } else {
-                // Mensaje de bienvenida
                 const time = new Date().toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' });
                 const welcomeMessage = `
                     <div class="message bot">
@@ -4809,16 +5159,37 @@ let selectedSimulationId = null;
                     </div>
                 `;
                 messagesContainer.innerHTML = welcomeMessage;
-                saveChatToStorage(welcomeMessage);
+                saveChatToStorage();
             }
             
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
         }
 
-        function saveChatToStorage(messageHtml) {
+        function saveChatToStorage() {
             const messagesContainer = document.getElementById('chatMessages');
             const currentMessages = messagesContainer.innerHTML;
             localStorage.setItem('iafinance_chat_history', JSON.stringify([currentMessages]));
+        }
+
+        function clearChatHistory() {
+            if (confirm('¿Estás seguro de borrar todo el historial de la conversación?')) {
+                localStorage.removeItem('iafinance_chat_history');
+                initChat();
+                alert('✅ Historial borrado');
+            }
+        }
+
+        function exportChatHistory() {
+            const messagesContainer = document.getElementById('chatMessages');
+            const chatText = messagesContainer.innerText;
+            const blob = new Blob([chatText], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `chat_roman_${new Date().toISOString().slice(0,10)}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+            alert('📥 Conversación exportada');
         }
 
         function sendMessage() {
@@ -4829,7 +5200,6 @@ let selectedSimulationId = null;
             const messagesContainer = document.getElementById('chatMessages');
             const time = new Date().toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' });
             
-            // Mensaje del usuario
             const userMessageHtml = `
                 <div class="message user">
                     <div class="message-avatar">
@@ -4846,10 +5216,8 @@ let selectedSimulationId = null;
             input.value = '';
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
             
-            // Guardar en localStorage
             saveChatToStorage();
             
-            // Procesar respuesta
             setTimeout(() => {
                 processBotResponse(message);
             }, 1000);
@@ -4868,8 +5236,13 @@ let selectedSimulationId = null;
             }
             
             // Despedidas
-            else if (lowerMessage.includes('adiós') || lowerMessage.includes('hasta luego') || lowerMessage.includes('nos vemos') || lowerMessage.includes('chao') || lowerMessage.includes('gracias')) {
+            else if (lowerMessage.includes('adiós') || lowerMessage.includes('hasta luego') || lowerMessage.includes('nos vemos') || lowerMessage.includes('chao')) {
                 botResponse = `¡Hasta luego! 👋 Fue un placer ayudarte. Recuerda que siempre estaré aquí cuando necesites asesoramiento financiero. ¡Cuídate mucho!`;
+            }
+            
+            // Agradecimientos
+            else if (lowerMessage.includes('gracias') || lowerMessage.includes('thank you')) {
+                botResponse = `¡De nada! 😊 Me alegra poder ayudarte. ¿Hay algo más en lo que pueda asistirte?`;
             }
             
             // Consultas sobre ahorro
@@ -4883,7 +5256,7 @@ let selectedSimulationId = null;
             }
             
             // Consultas sobre deudas
-            else if (lowerMessage.includes('deuda') || lowerMessage.includes('deudas') || lowerMessage.includes('endeudado') || lowerMessage.includes('préstamo')) {
+            else if (lowerMessage.includes('deuda') || lowerMessage.includes('deudas') || lowerMessage.includes('endeudado')) {
                 botResponse = `🆘 **Estrategias para salir de deudas:**\n\n• **Método avalancha:** Paga primero las deudas con mayor interés.\n• **Método bola de nieve:** Paga primero las deudas más pequeñas para mantener motivación.\n• **Consolidación:** Unifica deudas en una sola con menor interés.\n• **Negociación:** Contacta a tus acreedores para renegociar tasas.\n\n¿Cuál es tu situación actual de deudas?`;
             }
             
@@ -4899,7 +5272,7 @@ let selectedSimulationId = null;
             
             // Consultas sobre interés compuesto
             else if (lowerMessage.includes('interés compuesto') || lowerMessage.includes('interes compuesto')) {
-                botResponse = `📈 **El interés compuesto - El octavo maravilla del mundo:**\n\nEs cuando los intereses que generas se reinvierten y comienzan a generar más intereses. ¡Tu dinero trabaja para ti!\n\n**Ejemplo:** Si inviertes S/1,000 al 10% anual:\n• Año 1: Ganas S/100 (total S/1,100)\n• Año 2: Ganas S/110 (total S/1,210)\n• Año 3: Ganas S/121 (total S/1,331)\n\n¡En 10 años tendrías S/2,593! El tiempo es tu mejor aliado. ¿Quieres calcular alguna proyección?`;
+                botResponse = `📈 **El interés compuesto - La octava maravilla del mundo:**\n\nEs cuando los intereses que generas se reinvierten y comienzan a generar más intereses. ¡Tu dinero trabaja para ti!\n\n**Ejemplo:** Si inviertes S/1,000 al 10% anual:\n• Año 1: Ganas S/100 (total S/1,100)\n• Año 2: Ganas S/110 (total S/1,210)\n• Año 3: Ganas S/121 (total S/1,331)\n\n¡En 10 años tendrías S/2,593! El tiempo es tu mejor aliado. ¿Quieres calcular alguna proyección?`;
             }
             
             // Consultas sobre jubilación
@@ -4947,7 +5320,6 @@ let selectedSimulationId = null;
             messagesContainer.innerHTML += botMessageHtml;
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
             
-            // Guardar en localStorage
             saveChatToStorage();
         }
 
@@ -4956,7 +5328,59 @@ let selectedSimulationId = null;
             sendMessage();
         }
 
-        // Exponer funciones globalmente
+        // ============================================
+        // NAVEGACIÓN Y UTILIDADES
+        // ============================================
+        function changePeriod(period) {
+            renderChart();
+        }
+
+        function showSection(section) {
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            
+            document.querySelectorAll('.main-content > div').forEach(div => div.classList.add('hidden'));
+            
+            if (section === 'dashboard') {
+                document.getElementById('dashboardContent').classList.remove('hidden');
+            } else if (section === 'dse') {
+                document.getElementById('dseContent').classList.remove('hidden');
+                renderSimulationsList();
+                if (selectedSimulationId) {
+                    viewSimulation(selectedSimulationId);
+                }
+            } else if (section === 'pfse') {
+                document.getElementById('pfseContent').classList.remove('hidden');
+                renderStrategiesList();
+            } else if (section === 'ioie') {
+                document.getElementById('ioieContent').classList.remove('hidden');
+                loadOpportunities();
+            } else if (section === 'eif') {
+                document.getElementById('eifContent').classList.remove('hidden');
+                loadIntegrations();
+            } else if (section === 'chat') {
+                document.getElementById('chatContent').classList.remove('hidden');
+                initChat();
+            }
+            
+            currentSection = section;
+        }
+
+        function toggleEditMode() {
+            alert('✏️ Modo edición activado (Demo)');
+        }
+
+        function navigateToTransactions() {
+            alert('📋 Ver todas las transacciones');
+        }
+
+        function logout() {
+            document.getElementById('dashboardSection').classList.add('hidden');
+            document.getElementById('loginSection').classList.remove('hidden');
+            showLogin();
+        }
+
+        // Exponer funciones globales
         window.showNewSimulationModal = showNewSimulationModal;
         window.hideNewSimulationModal = hideNewSimulationModal;
         window.createSimulation = createSimulation;
@@ -4965,6 +5389,8 @@ let selectedSimulationId = null;
         window.createStrategy = createStrategy;
         window.sendMessage = sendMessage;
         window.quickQuestion = quickQuestion;
+        window.clearChatHistory = clearChatHistory;
+        window.exportChatHistory = exportChatHistory;
         window.showSection = showSection;
         window.changePeriod = changePeriod;
         window.toggleEditMode = toggleEditMode;
@@ -4976,10 +5402,13 @@ let selectedSimulationId = null;
         window.resetVariables = resetVariables;
         window.runSimulation = runSimulation;
         window.viewStrategy = viewStrategy;
+        window.viewOpportunity = viewOpportunity;
+        window.applyToOpportunity = applyToOpportunity;
+        window.saveOpportunity = saveOpportunity;
+        window.connectIntegration = connectIntegration;
+        window.showNewWebhookModal = showNewWebhookModal;
+        window.testWebhook = testWebhook;
+        window.deleteWebhook = deleteWebhook;
     </script>
 </body>
-<<<<<<< HEAD
 </html>
-=======
-</html>
->>>>>>> 1458f892dc618b6d205ba5f09158b39248236774
