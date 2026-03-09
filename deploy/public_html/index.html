@@ -3723,19 +3723,17 @@
 
     <script>
         // Variables globales
-<<<<<<< HEAD
 // Detectar automáticamente el entorno
 const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-    ? 'http://localhost:3000'  // Desarrollo local
-    : 'https://ia-finance.devioz.com:3000';     let isAdmin = true;
-=======
-        const API_URL = 'http://localhost:3000';
-        let isAdmin = true;
->>>>>>> 1458f892dc618b6d205ba5f09158b39248236774
-        let userName = 'Administrador';
-        let userEmail = 'admin@iafinance.com';
-        let currentSection = 'dashboard';
-        let selectedSimulationId = null;
+    ? 'http://localhost:3000' // Desarrollo local
+    : 'https://ia-finance.devioz.com:3000'; // Producción
+
+// Variables globales
+let isAdmin = true;
+let userName = 'Administrador';
+let userEmail = 'admin@iafinance.com';
+let currentSection = 'dashboard';
+let selectedSimulationId = null;
         
         // ===== SIMULACIONES MEJORADAS (con casos de ejemplo) =====
         let simulations = [
